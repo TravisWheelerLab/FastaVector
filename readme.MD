@@ -1,5 +1,5 @@
 # FastaVector
-A simple C library for reading/writing fasta files.
+A simple C library for reading/writing fasta files. This library concatenates the headers of the fasta into a buffer, concatenates the sequences into a separate buffer, and keeps a metadata buffer that allows for easy indexing into the fasta data to retrieve the headers/sequences via simple lookup table.
 
 
 ## Prerequisites
@@ -13,16 +13,14 @@ To build a dynamic library (.so file), simply call
 $ make
 ```
 
+To build a static library,
+```shell
+$ make static
+```
 
 To build a dynamic library for Mac (.dylib),
 ```shell
 $ make ARCH=MAC
-```
-
-
-To build a static library,
-```shell
-$ make static
 ```
 
 then, to install,
@@ -31,4 +29,4 @@ $ make install
 ```
 
 
-For more info, please consult src/fastaVector.h
+For more info and the library API, please consult src/fastaVector.h
