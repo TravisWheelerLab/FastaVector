@@ -162,41 +162,6 @@ enum FastaVectorReturnCode fastaVectorWriteFasta(const char *restrict const file
 
         sequenceWritePosition += fileLineLength;
       }
-      // for(size_t lineBeginPosition = sequenceStartPosition; lineBeginPosition < sequenceEndPosition; lineBeginPosition+= fileLineLength){
-      //   size_t thisLineLength = lineBeginPosition + fileLineLength >= sequenceEndPosition? fileLineLength: sequenceEndPosition - lineBeginPosition ;
-      //   printf("writing line of length %zu\n", thisLineLength);
-      //   size_t bytesWritten = fwrite(fastaVector->sequence.charData + lineBeginPosition, sizeof(char), thisLineLength, fastaFile);
-      //   if(bytesWritten != (thisLineLength * sizeof(char))){
-      //     fclose(fastaFile);
-      //     return FASTA_VECTOR_FILE_WRITE_FAIL;
-      //   }
-      //   //write the newline to end this sequence line.
-      //   fputc('\n', fastaFile);
-      //   if(__builtin_expect(ferror(fastaFile), false)){
-      //     fclose(fastaFile);
-      //     return FASTA_VECTOR_FILE_WRITE_FAIL;
-      //   }
-      // }
-
-      //write the remaining section of the sequence, if it exists.
-      // size_t remainingLineLength = sequenceLength % fileLineLength;
-      // if(remainingLineLength != 0){
-      //   char *finalLineStartPosition = fastaVector->sequence.charData + sequenceEndPosition - remainingLineLength;
-      //   size_t bytesWritten = fwrite(finalLineStartPosition, sizeof(char), remainingLineLength, fastaFile);
-      //
-      //   if(__builtin_expect(bytesWritten != remainingLineLength * sizeof(char), false)){
-      //     fclose(fastaFile);
-      //     return FASTA_VECTOR_FILE_WRITE_FAIL;
-      //   }
-      //   //write the newline after the final line
-      //   fputc('\n', fastaFile);
-      //
-      //   if(__builtin_expect(ferror(fastaFile), false)){
-      //     fclose(fastaFile);
-      //     return FASTA_VECTOR_FILE_WRITE_FAIL;
-      //   }
-      // }
-
     }
     fclose(fastaFile);
     return FASTA_VECTOR_OK;
