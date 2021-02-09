@@ -1,0 +1,6 @@
+>header 1 ;this is header 1, and this comment should be ignored
+sequence1datasequence1datasequence1data
+>  header 2 stuff with full, longer header. I'm putting some extra chars in here   1234567890-=~!@#$%^&*()_+:'"<>?,./[]\qwertyuiop[]\aSDFGHJKLZXCVBNMqwertyuiop{}|ASDFGHJKKLLL:"ZXCVBNM<>?;now, a comment'
+sequence2Datasequence2Datasequence2Datasequence2Data;comment
+>h
+thisissomesequence`1234567890-=qwertyuiop[]\\ASDFGHJKL'ZXCVBNM,./~!@#$%^&*()_+qwertyuiop{}|asdfghjkl:"zxcvbnm<>?some more sequence;and a comment  qwertyuiop[]\ASDFGHJKL:"QWERTYUIOP{}|asdfghjkl;!!!BEGIN COMMENT!!!'zxcvbnm,./ZXCVBNM<>?'"
