@@ -260,22 +260,25 @@ void fastaVectorFastaGetSequence(struct FastaVector *fastaVector, size_t sequenc
 }
 
 
-struct FastaVectorLocalPosition fastaVectorGetLocalSequencePositionFromGlobal(
-  const struct FastaVector *const fastaVector, const size_t globalSequencePosition){
+bool fastaVectorGetLocalSequencePositionFromGlobal(
+  const struct FastaVector *const fastaVector, const size_t globalSequencePosition, struct FastaVectorLocalPosition *localPosition){
+    if(localPosition == NULL){
+      return false;
+    }
   for(size_t sequenceIndex = 0; sequenceIndex < fastaVector->metadata.count; sequenceIndex++){
     const size_t sequenceStartPosition = sequenceIndex == 0? 0: fastaVector->metadata.data[sequenceIndex-1].sequenceEndPosition;
     const size_t sequenceEndPosition = fastaVector->metadata.data[sequenceIndex].sequenceEndPosition;
 
     if(globalSequencePosition <= sequenceEndPosition){
       const size_t positionInSequence = globalSequencePosition - sequenceStartPosition;
-      struct FastaVectorLocalPosition localPosition = {.sequenceIndex = sequenceIndex, .positionInSequence = positionInSequence};
-      return localPosition;
+      localPosition->sequenceIndex = sequenceIndex;
+      localPosition->positionInSequence = positionInSequence;
+      return true;
     }
   }
 
-  //if no sequence is found that contains the given position, return a struct of all 0
-  struct FastaVectorLocalPosition localPosition = {.sequenceIndex = 0, .positionInSequence = 0};
-  return localPosition;
+  //if no sequence is found that contains the given position, return false to show failure
+  return false;
 }
 
 
