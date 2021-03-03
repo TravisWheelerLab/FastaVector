@@ -18,11 +18,6 @@ To build a static library,
 $ make static
 ```
 
-To build a dynamic library for Mac (.dylib),
-```shell
-$ make ARCH=MAC
-```
-
 then, to install,
 ```shell
 $ make install
