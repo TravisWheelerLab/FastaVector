@@ -1,3 +1,7 @@
 *.gch
 *.out
 writeFileTests/*.fasta
+*.so
+*.a
+*.o
+build/
