@@ -17,7 +17,10 @@ void fastaVectorStringDealloc(struct FastaVectorString *vector){
 
 
 bool fastaVectorStringAddChar(struct FastaVectorString *vector, const char c){
-  if(vector->capacity == vector->count){
+  //we check the capacity against 1 more than the count so the vector always has
+  //one additional character of storage. This is useful for adding a sentinel character
+  // as is the case when generating an FM-index
+  if(vector->capacity == (vector->count + 1)){
     bool allocationSuccess = fastaVectorStringResize(vector);
     if(!allocationSuccess){
       return false;
