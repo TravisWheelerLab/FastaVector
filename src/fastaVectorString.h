@@ -21,10 +21,6 @@ struct FastaVectorString{
  *
  *  Inputs:
  *    vector: fastaVectorString to initialize.
- *    header: pointer to the first character in the header. This does not need to be null-terminated.
- *    headerLength: length of the header, in characters.
- *    sequence: pointer to the first character in the sequence. This does not need to be null-terminated.
- *    sequenceLength: length of the sequence, in characters.
  *
  *  Returns:
  *    true on allocation success, false on allocation failure.

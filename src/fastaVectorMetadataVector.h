@@ -39,7 +39,6 @@ bool fastaVectorMetadataVectorInit(struct FastaVectorMetadataVector *vector);
  *
  *  Inputs:
  *    vector: fastaVectorString to deallocate.
- *
  */
 void fastaVectorMetadataVectorDealloc(struct FastaVectorMetadataVector *vector);
 
@@ -53,7 +52,6 @@ void fastaVectorMetadataVectorDealloc(struct FastaVectorMetadataVector *vector);
  *
  *  Inputs:
  *    vector: fastaVectorString to deallocate.
- *
  */
 bool fastaVectorMetadataVectorAddMetadata(struct FastaVectorMetadataVector *vector);
 
