@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include "FastaVector.h"
 
 #define FASTA_VECTOR_FILE_READ_BUFFER_SIZE 1024
-
-
 
 
 //state of the finite state machine that parses the fasta files during reading.
