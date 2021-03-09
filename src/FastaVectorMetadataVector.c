@@ -1,4 +1,4 @@
-#include "fastaVectorMetadataVector.h"
+#include "FastaVectorMetadataVector.h"
 
 
 bool fastaVectorMetadataVectorResize(struct FastaVectorMetadataVector *vector);

@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "fastaVectorString.h"
-#include "fastaVectorMetadataVector.h"
+#include "FastaVectorString.h"
+#include "FastaVectorMetadataVector.h"
 
 
 //main struct to store the fasta data.
@@ -45,7 +45,6 @@ enum FastaVectorReturnCode fastaVectorInit(struct FastaVector *fastaVector);
  *
  *  Inputs:
  *    fastaVector: vector to deallocate
- *
  */
 void fastaVectorDealloc(struct FastaVector *fastaVector);
 

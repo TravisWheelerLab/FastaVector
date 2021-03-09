@@ -1,7 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include "fastaVector.h"
-#include "fastaVectorMetadataVector.h"
 
 #define FASTA_VECTOR_FILE_READ_BUFFER_SIZE 1024
 

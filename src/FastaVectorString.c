@@ -1,4 +1,4 @@
-#include "fastaVectorString.h"
+#include "FastaVectorString.h"
 
 
 bool fastaVectorStringResize(struct FastaVectorString *vector);
