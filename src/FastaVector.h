@@ -64,7 +64,7 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  *    FASTA_VECTOR_FILE_OPEN_FAIL: on failure to open the file (was the fileSrc correct?).
  */
 enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileSrc,
-  struct FastaVector *fastaVector);
+  struct FastaVector *fastaVector, const bool nullTerminateHeaders, const bool nullTerminateSequences);
 
 
 /* Function:  fastaVectorWriteFasta

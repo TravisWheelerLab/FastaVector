@@ -29,7 +29,7 @@ void fastaVectorDealloc(struct FastaVector *fastaVector){
 
 
 enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileSrc,
-  struct FastaVector *fastaVector){
+  struct FastaVector *fastaVector, const bool nullTerminateHeaders, const bool nullTerminateSequences){
 
   FILE *fastaFile = fopen(fileSrc, "r");
   if (__builtin_expect(!fastaFile, false)){
@@ -49,6 +49,15 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
       case FASTA_VECTOR_READ_ON_NEWLINE:
         if(charFromFile == '>'){
           readState = FASTA_VECTOR_READ_HEADER;
+          if(nullTerminateSequences){
+            if(fastaVector->metadata.count != 0){
+              bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+              if(__builtin_expect(!addCharResult, false)){
+                fclose(fastaFile);
+                return FASTA_VECTOR_ALLOCATION_FAIL;
+              }
+            }
+          }
           bool addHeaderResult = fastaVectorAddNewHeader(fastaVector);
           if(__builtin_expect(!addHeaderResult, false)){
             fclose(fastaFile);
@@ -71,9 +80,23 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
       case FASTA_VECTOR_READ_HEADER:
         if(charFromFile == ';'){
           readState = FASTA_VECTOR_READ_COMMENT;
+          if(nullTerminateHeaders){
+            bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
+            if(__builtin_expect(!addHeaderCharResult, false)){
+              fclose(fastaFile);
+              return FASTA_VECTOR_ALLOCATION_FAIL;
+            }
+          }
         }
         else if(charFromFile == '\n'){
           readState = FASTA_VECTOR_READ_ON_NEWLINE;
+          if(nullTerminateHeaders){
+            bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
+            if(__builtin_expect(!addHeaderCharResult, false)){
+              fclose(fastaFile);
+              return FASTA_VECTOR_ALLOCATION_FAIL;
+            }
+          }
         }
         else if (__builtin_expect(charFromFile >= ' ' || charFromFile == '\t', true)){
           bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, charFromFile);
@@ -102,6 +125,14 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
     }
   }
 
+  if(nullTerminateSequences){
+    bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+    if(__builtin_expect(!addCharResult, false)){
+      fclose(fastaFile);
+      return FASTA_VECTOR_ALLOCATION_FAIL;
+    }
+  }
+
   fclose(fastaFile);
   return FASTA_VECTOR_OK;
 }
@@ -124,6 +155,11 @@ enum FastaVectorReturnCode fastaVectorWriteFasta(const char *restrict const file
         return FASTA_VECTOR_FILE_WRITE_FAIL;
       }
 
+      //if the header appears to be null terminated, don't write that last character (the null terminator)
+      bool headerIsNullTerminated = fastaVector->header.charData[headerEndPosition-1] == '\0';
+      if(headerIsNullTerminated){
+        headerLength--;
+      }
       size_t bytesWritten = fwrite(fastaVector->header.charData + headerStartPosition, sizeof(char), headerLength, fastaFile);
       if(bytesWritten != headerLength * sizeof(char)){
         fclose(fastaFile);
@@ -144,6 +180,16 @@ enum FastaVectorReturnCode fastaVectorWriteFasta(const char *restrict const file
       while(sequenceWritePosition < sequenceEndPosition){
         size_t thisLineLength = (sequenceWritePosition + fileLineLength) < sequenceEndPosition?
           fileLineLength: sequenceEndPosition - sequenceWritePosition;
+
+        size_t sequenceLineEndPosition = sequenceWritePosition + fileLineLength;
+        //if the sequence appears to be null terminated, don't write that last character (the null terminator)
+        if((sequenceLineEndPosition == sequenceEndPosition)){
+          bool sequenceIsNullTerminated = fastaVector->sequence.charData[sequenceLineEndPosition -1] == '\0';
+          //if the sequence is null terminated, decrease the line length by 1 to not write the null terminator.
+          if(sequenceIsNullTerminated){
+            thisLineLength--;
+          }
+        }
 
         size_t bytesWritten = fwrite(fastaVector->sequence.charData + sequenceWritePosition, sizeof(char), thisLineLength, fastaFile);
         if(bytesWritten != (thisLineLength * sizeof(char))){
