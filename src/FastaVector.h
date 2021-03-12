@@ -57,6 +57,11 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  *  Inputs:
  *    fileSrc: string representing the location of the fasta file to load.
  *    fastaVector: vector to load the fasta into.
+ *    nullTerminateHeaders: if this is set to true, null-terminating '\0's are added
+ *      after each header to easily denote the end of the header (useful for printing).
+ *    nullTerminateSequences: if this is set to true, null-terminating '\0's are added
+ *      after each sequence to easily separate them, useful for printing or separating
+ *      the sequences in an index (if terminators are replaced with ambiguity characters.)
  *
  *  Returns:
  *    FASTA_VECTOR_OK on fasta read success
@@ -110,6 +115,8 @@ enum FastaVectorReturnCode fastaVectorAddSequenceToList(struct FastaVector *fast
 /* Function:  fastaVectorFastaGetHeader
  * --------------------
  * Gets a header from the given fastaVector. The headerIndex argument determines which header is retrieved.
+ *  If the FastaVector was built with null-terminated headers, the null terminator will be included in the
+ *  returned headerPtr and headerLength.
  *
  *  Inputs:
  *    fastaVector: fastaVector extract a header from.
@@ -124,6 +131,8 @@ void fastaVectorFastaGetHeader(struct FastaVector *fastaVector, size_t headerInd
 /* Function:  fastaVectorFastaGetSequence
  * --------------------
  * Gets a sequence from the given fastaVector. The headerIndex argument determines which sequence is retrieved.
+ *  If the FastaVector was built with null-terminated sequences, the null terminator will be included in the
+ *  returned sequencePtr and sequenceLength.
  *
  *  Inputs:
  *    fastaVector: fastaVector extract a sequence from.
