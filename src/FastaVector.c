@@ -29,13 +29,14 @@ void fastaVectorDealloc(struct FastaVector *fastaVector){
 
 
 enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileSrc,
-  struct FastaVector *fastaVector, const bool nullTerminateHeaders, const bool nullTerminateSequences){
+  struct FastaVector *fastaVector){
 
   FILE *fastaFile = fopen(fileSrc, "r");
   if (__builtin_expect(!fastaFile, false)){
     return FASTA_VECTOR_FILE_OPEN_FAIL;
   }
 
+  //loop over the file with a finite state machine.
   enum FastaVectorFileReadState readState = FASTA_VECTOR_READ_ON_NEWLINE;
   while(!feof(fastaFile)){
     char charFromFile = fgetc(fastaFile);
@@ -49,15 +50,16 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
       case FASTA_VECTOR_READ_ON_NEWLINE:
         if(charFromFile == '>'){
           readState = FASTA_VECTOR_READ_HEADER;
-          if(nullTerminateSequences){
-            if(fastaVector->metadata.count != 0){
-              bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
-              if(__builtin_expect(!addCharResult, false)){
-                fclose(fastaFile);
-                return FASTA_VECTOR_ALLOCATION_FAIL;
-              }
+
+          //null terminate the previous sequence (if this isn't the first header)
+          if(fastaVector->metadata.count != 0){
+            bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+            if(__builtin_expect(!addCharResult, false)){
+              fclose(fastaFile);
+              return FASTA_VECTOR_ALLOCATION_FAIL;
             }
           }
+
           bool addHeaderResult = fastaVectorAddNewHeader(fastaVector);
           if(__builtin_expect(!addHeaderResult, false)){
             fclose(fastaFile);
@@ -80,24 +82,25 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
       case FASTA_VECTOR_READ_HEADER:
         if(charFromFile == ';'){
           readState = FASTA_VECTOR_READ_COMMENT;
-          if(nullTerminateHeaders){
-            bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
-            if(__builtin_expect(!addHeaderCharResult, false)){
-              fclose(fastaFile);
-              return FASTA_VECTOR_ALLOCATION_FAIL;
-            }
+          //since we're done with the header, null terminate it.
+          bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
+          if(__builtin_expect(!addHeaderCharResult, false)){
+            fclose(fastaFile);
+            return FASTA_VECTOR_ALLOCATION_FAIL;
           }
+
         }
         else if(charFromFile == '\n'){
           readState = FASTA_VECTOR_READ_ON_NEWLINE;
-          if(nullTerminateHeaders){
-            bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
-            if(__builtin_expect(!addHeaderCharResult, false)){
-              fclose(fastaFile);
-              return FASTA_VECTOR_ALLOCATION_FAIL;
-            }
+          //since we're done with the header, null terminate it.
+          bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
+          if(__builtin_expect(!addHeaderCharResult, false)){
+            fclose(fastaFile);
+            return FASTA_VECTOR_ALLOCATION_FAIL;
           }
+
         }
+        //if the character looks like it belongs to the header text
         else if (__builtin_expect(charFromFile >= ' ' || charFromFile == '\t', true)){
           bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, charFromFile);
           if(__builtin_expect(!addHeaderCharResult, false)){
@@ -125,12 +128,11 @@ enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileS
     }
   }
 
-  if(nullTerminateSequences){
-    bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
-    if(__builtin_expect(!addCharResult, false)){
-      fclose(fastaFile);
-      return FASTA_VECTOR_ALLOCATION_FAIL;
-    }
+  //null terminate this last sequence before we're done.
+  bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+  if(__builtin_expect(!addCharResult, false)){
+    fclose(fastaFile);
+    return FASTA_VECTOR_ALLOCATION_FAIL;
   }
 
   fclose(fastaFile);
@@ -212,24 +214,38 @@ enum FastaVectorReturnCode fastaVectorWriteFasta(const char *restrict const file
 
 enum FastaVectorReturnCode fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
   size_t headerLength, char *sequence, size_t sequenceLength){
-  //TODO: change all functions to start with FastaVectorFasta, to eliminate any ambiguity.
 
+  //set up the metadata so it will hold the new header
   bool addHeaderResult = fastaVectorAddNewHeader(fastaVector);
   if(__builtin_expect(!addHeaderResult, false)){
     return FASTA_VECTOR_ALLOCATION_FAIL;
   }
 
+  //write the header
   for(size_t i = 0; i < headerLength; i++){
     bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, header[i]);
     if(__builtin_expect(!addHeaderCharResult, false)){
       return FASTA_VECTOR_ALLOCATION_FAIL;
     }
   }
+
+  //write the null terminator to end the header
+  bool addHeaderCharResult = fastaVectorAddCharToHeaderVector(fastaVector, '\0');
+  if(__builtin_expect(!addHeaderCharResult, false)){
+    return FASTA_VECTOR_ALLOCATION_FAIL;
+  }
+
+  //write the sequence
   for(size_t i = 0; i < sequenceLength; i++){
     bool addSequenceCharResult = fastaVectorAddCharToSequenceVector(fastaVector, sequence[i]);
     if(__builtin_expect(!addSequenceCharResult, false)){
       return FASTA_VECTOR_ALLOCATION_FAIL;
     }
+  }
+  //add the null terminator to end the sequence
+  bool addSequenceCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+  if(__builtin_expect(!addSequenceCharResult, false)){
+    return FASTA_VECTOR_ALLOCATION_FAIL;
   }
 
   return FASTA_VECTOR_OK;

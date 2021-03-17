@@ -69,7 +69,7 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  *    FASTA_VECTOR_FILE_OPEN_FAIL: on failure to open the file (was the fileSrc correct?).
  */
 enum FastaVectorReturnCode fastaVectorReadFasta(const char *restrict const fileSrc,
-  struct FastaVector *fastaVector, const bool nullTerminateHeaders, const bool nullTerminateSequences);
+  struct FastaVector *fastaVector);
 
 
 /* Function:  fastaVectorWriteFasta
@@ -93,7 +93,8 @@ enum FastaVectorReturnCode fastaVectorWriteFasta(const char *restrict const file
 
 /* Function:  fastaVectorAddSequenceToList
  * --------------------
- * Adds a header and sequence to the given fastaVector.
+ * Adds a header and sequence to the given fastaVector. The sequence will automatically be
+ *  internally null terminated when it is inserted into the FastaVector.
  *
  *  Inputs:
  *    fastaVector: fastaVector to add the header and sequence to.

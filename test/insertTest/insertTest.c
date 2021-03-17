@@ -96,15 +96,14 @@ void testInsertSequences(){
 
     sprintf(buffer, "header %zu had length %zu, but range [%zu, %zu] makes stored length %zu",
       i, headerLengths[i], headerStartPosition, headerEndPosition, headerLength);
-    testAssertString(headerLengths[i] == headerLength, buffer);
+    testAssertString((headerLengths[i]+1) == headerLength, buffer);
 
 
     sprintf(buffer, "sequence %zu had length %zu, but range [%zu, %zu] makes stored length %zu",
       i, sequenceLengths[i], sequenceStartPosition, sequenceEndPosition, sequenceLength);
-    testAssertString(sequenceLengths[i] == sequenceLength, buffer);
+    testAssertString((sequenceLengths[i]+1) == sequenceLength, buffer);
 
 
-    //TODO: get the header and sequence, and test that they're correct against headerPtrs and sequencePtrs.
     for(size_t i = 0; i < numSequences; i++){
       size_t sequenceStartPosition = i == 0? 0: fastaVector.metadata.data[i-1].sequenceEndPosition;
       char *mainSequencePtr = fastaVector.sequence.charData;

@@ -100,11 +100,11 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc){
     fastaVectorFastaGetHeader(&fastaVector, sequenceNum, &headerFromVector, &headerLengthFromVector);
     fastaVectorFastaGetSequence(&fastaVector, sequenceNum, &sequenceFromVector, &sequenceLengthFromVector);
     sprintf(buffer, "header was supposed to be length %zu, but got %zu.", headerLength, headerLengthFromVector);
-    testAssertString(headerLength == headerLengthFromVector, buffer);
+    testAssertString((headerLength + 1) == headerLengthFromVector, buffer);
     sprintf(buffer, "header was supposed to match %s, but got %.*s.", headerPtr, (int)headerLengthFromVector, headerFromVector);
     testAssertString(strncmp(headerFromVector, headerPtr, headerLength) == 0, buffer);
     sprintf(buffer, "sequence was supposed to be length %zu, but got %zu.", sequenceLength, sequenceLengthFromVector);
-    testAssertString(sequenceLength == sequenceLengthFromVector, buffer);
+    testAssertString((sequenceLength+1) == sequenceLengthFromVector, buffer);
     sprintf(buffer, "sequence was supposed to match %s, but got %.*s.", sequencePtr, (int)sequenceLengthFromVector, sequenceFromVector);
     testAssertString(strncmp(sequenceFromVector, sequencePtr, sequenceLength) == 0, buffer);
 

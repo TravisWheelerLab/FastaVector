@@ -8,19 +8,20 @@
 
 char buffer[2048];
 
-void readTest(char ** const testHeaderStrings, char ** const testSequenceStrings, const size_t numHeaders, const char *fastaSrc,
-  bool nullTerminateHeaders, bool nullTerminateSequences){
+void readTest(char ** const testHeaderStrings, char ** const testSequenceStrings,
+  const size_t numHeaders, const char *fastaSrc){
   struct FastaVector fastaVector;
   enum FastaVectorReturnCode returnCode = fastaVectorInit(&fastaVector);
   testAssertString(returnCode == FASTA_VECTOR_OK, "fastaInit was unsucessful for test 1");
 
-  returnCode = fastaVectorReadFasta(fastaSrc, &fastaVector, nullTerminateHeaders, nullTerminateSequences);
+  returnCode = fastaVectorReadFasta(fastaSrc, &fastaVector);
   testAssertString(returnCode == FASTA_VECTOR_OK, "fail on reading test1.fasta for test 1");
 
 
   for(size_t i = 0; i < numHeaders; i++){
-    const size_t expectedHeaderLength = strlen(testHeaderStrings[i]) + (nullTerminateHeaders? 1:0);
-    const size_t expectedSequenceLength = strlen(testSequenceStrings[i]) + (nullTerminateSequences? 1:0);
+    //add 1 to the strings for the  null terminators
+    const size_t expectedHeaderLength = strlen(testHeaderStrings[i]) + 1;
+    const size_t expectedSequenceLength = strlen(testSequenceStrings[i]) + 1;
     size_t headerLength;
     char *headerPtr;
     fastaVectorFastaGetHeader(&fastaVector, i, &headerPtr, &headerLength);
@@ -42,16 +43,14 @@ void readTest(char ** const testHeaderStrings, char ** const testSequenceStrings
     testAssertString(stringsMatch, buffer);
 
 
-    if(nullTerminateHeaders){
-      char terminator = headerPtr[headerLength-1];
-      sprintf(buffer, "header index %zu was not null terminated! (found char %c after the end of the header)", i, terminator);
-      testAssertString(terminator == '\0', buffer);
-    }
-    if(nullTerminateSequences){
-      char terminator = sequencePtr[sequenceLength-1];
-      sprintf(buffer, "sequence index %zu was not null terminated! (found char %c after the end of the header)", i, terminator);
-      testAssertString(terminator == '\0', buffer);
-    }
+    char terminator = headerPtr[headerLength-1];
+    sprintf(buffer, "header index %zu was not null terminated! (found char %c after the end of the header)", i, terminator);
+    testAssertString(terminator == '\0', buffer);
+
+    terminator = sequencePtr[sequenceLength-1];
+    sprintf(buffer, "sequence index %zu was not null terminated! (found char %c after the end of the header)", i, terminator);
+    testAssertString(terminator == '\0', buffer);
+
   }
 
   fastaVectorDealloc(&fastaVector);
@@ -65,22 +64,22 @@ int main (int argc, char ** argv){
   printf("read test 1...\n");
   testHeaderStrings[0] = "test 1 header";
   testSequenceStrings[0] = "test1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbas";
-  readTest(testHeaderStrings, testSequenceStrings, 1, "test1.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 1, "test1.fasta");
 
   printf("read test 2...\n");
   testHeaderStrings[0] = "test 2 header";
   testSequenceStrings[0] = "test1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbastest1sequencedataagasfnlawebrfilqawhbefrilahwbseflikhabsdlfikhbas";
-  readTest(testHeaderStrings, testSequenceStrings, 1, "test2.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 1, "test2.fasta");
 
   printf("read test 3...\n");
   testHeaderStrings[0] = "test 2 header ";
   testSequenceStrings[0] = "awldeifbawiefbawlieskfbalkhsdbfalkhsbdflkhasbdflhjkasbdfhjkasbdfhjkasbdfiuwbeunflikzsbef";
-  readTest(testHeaderStrings, testSequenceStrings, 1, "test3.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 1, "test3.fasta");
 
   printf("read test 4...\n");
   testHeaderStrings[0] = "test 4 header                ";
   testSequenceStrings[0] = "zxcvnzxcweryugbvmbzxcvmb";
-  readTest(testHeaderStrings, testSequenceStrings, 1, "test4.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 1, "test4.fasta");
 
   printf("read test 5...\n");
   testHeaderStrings[0] = "header 1 ";
@@ -89,12 +88,12 @@ int main (int argc, char ** argv){
   testSequenceStrings[1] = "sequence2Datasequence2Datasequence2Datasequence2Data";
   testHeaderStrings[2] = "h";
   testSequenceStrings[2] = "thisissomesequence`1234567890-=qwertyuiop[]\\\\ASDFGHJKL'ZXCVBNM,./~!@#$%^&*()_+qwertyuiop{}|asdfghjkl:\"zxcvbnm<>?some more sequence";
-  readTest(testHeaderStrings, testSequenceStrings, 3, "test5.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 3, "test5.fasta");
 
   printf("read test 6...\n");
   testHeaderStrings[0] = "header 1";
   testSequenceStrings[0] = "sequence1DataLine1sequence1DataLine2sequence1DataLine3sequence1DataLine4sequence1DataLine5sequence1DataLine6sequence1DataLine6sequence1DataLine6sequence1DataLine6sequence1DataLine6sequence1DataLine6sequence1DataLine6";
-  readTest(testHeaderStrings, testSequenceStrings, 1, "test6.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 1, "test6.fasta");
 
 
   printf("read test 7...\n");
@@ -112,14 +111,14 @@ int main (int argc, char ** argv){
   testSequenceStrings[5] = "asdinhertihne";
   testHeaderStrings[6] = "header7";
   testSequenceStrings[6] = "FASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OKFASTA_VECTOR_OK";
-  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta", false, false);
+  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta");
 
 
 
   printf("read test 8...\n");
-  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta", false, true);
-  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta", true, false);
-  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta", true, true);
+  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta");
+  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta");
+  readTest(testHeaderStrings, testSequenceStrings, 7, "test7.fasta");
 
   printf("read tests completed\n");
 }
