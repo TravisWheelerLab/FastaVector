@@ -5,26 +5,19 @@ the headers of the fasta file into a buffer, concatenates the sequences into a
 separate buffer, and keeps a metadata buffer that allows for easy indexing into
 the fasta data to retrieve the headers/sequences via simple lookup table.
 
-## Prerequisites
+## Building
 
-* A GCC-compatible compiler
-* Make
+This library uses CMake. To build the library, use:
 
-To build a dynamic library (.so file), simply call
-
-```shell
-$ make
+```
+cmake .
+make
 ```
 
-To build a static library,
-```shell
-$ make static
-```
+This will produce both static and dynamic versions of the library in the
+`build/` directory. To install the dynamic version, use `make install`.
 
-then, to install,
-```shell
-$ make install
-```
+## Using
 
 For more info and the library API, please consult src/FastaVector.h
 
