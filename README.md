@@ -17,6 +17,13 @@ make
 This will produce both static and dynamic versions of the library in the
 `build/` directory. To install the dynamic version, use `make install`.
 
+It is also possible to build using a handrolled Makefile, without CMake. To do
+this, use `Makefile_legacy`:
+
+```
+make -f Makefile_legacy
+```
+
 ## Using
 
 For more info and the library API, please consult src/FastaVector.h
