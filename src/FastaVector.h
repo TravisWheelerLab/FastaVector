@@ -15,7 +15,6 @@
 
 /**
  * @brief Primary struct that stores data for a given FASTA file.
- *
  */
 struct FastaVector {
   /**
@@ -36,7 +35,6 @@ struct FastaVector {
 
 /**
  * @brief Return codes used by `FastaVector` functions.
- *
  */
 enum FastaVectorReturnCode {
   /**
@@ -68,7 +66,6 @@ enum FastaVectorReturnCode {
 
 /**
  * @brief A position within a single sequence contained in a `FastaVector`.
- *
  */
 struct FastaVectorLocalPosition {
   /**
@@ -246,17 +243,35 @@ bool fastaVectorGetLocalSequencePositionFromGlobal(
     const size_t globalSequencePosition,
     struct FastaVectorLocalPosition *localPosition);
 
-/*Advanced Public Function Prototypes
- *NOTE: these functions should not be used for normal operation, but they are
- *included here for advanced users who may need to build the data structure in a
- *character-by-character basis. These functions add elements to the vectors in a
- *controlled way that grows the internal arrays if necessary. Please review the
- *implementation for fastaVectorAddSequenceToList to see an example of how to
- *use them.
+/**
+ * @brief This is an advanced function and should not be used under normal
+ * circumstances.
+ *
+ * Please review the implementation for fastaVectorAddSequenceToList to see an
+ * example of how to use it.
+ *
  */
 bool fastaVectorAddCharToSequenceVector(struct FastaVector *fastaVector,
                                         char c);
+
+/**
+ * @brief This is an advanced function and should not be used under normal
+ * circumstances.
+ *
+ * Please review the implementation for fastaVectorAddSequenceToList to see an
+ * example of how to use it.
+ *
+ */
 bool fastaVectorAddCharToHeaderVector(struct FastaVector *fastaVector, char c);
+
+/**
+ * @brief This is an advanced function and should not be used under normal
+ * circumstances.
+ *
+ * Please review the implementation for fastaVectorAddSequenceToList to see an
+ * example of how to use it.
+ *
+ */
 bool fastaVectorAddNewHeader(struct FastaVector *fastaVector);
 
 #endif
