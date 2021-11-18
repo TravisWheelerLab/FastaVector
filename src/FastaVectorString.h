@@ -1,18 +1,16 @@
 #ifndef FASTA_VECTOR_STRING_H
 #define FASTA_VECTOR_STRING_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
 
 #define FASTA_VECTOR_CHAR_VECTOR_DEFAULT_CAPACITY 2048
 
-struct FastaVectorString{
+struct FastaVectorString {
   char *charData;
   size_t capacity;
   size_t count;
-
 };
 
 /* Function:  fastaVectorStringInit
@@ -27,7 +25,6 @@ struct FastaVectorString{
  */
 bool fastaVectorStringInit(struct FastaVectorString *vector);
 
-
 /* Function:  fastaVectorStringDealloc
  * --------------------
  * deallocates the member data for the vectorString.
@@ -37,10 +34,10 @@ bool fastaVectorStringInit(struct FastaVectorString *vector);
  */
 void fastaVectorStringDealloc(struct FastaVectorString *vector);
 
-
 /* Function:  fastaVectorStringAddChar
  * --------------------
- * appends a character to the fastaVectorString. This will grow the string's interal buffer if necessary.
+ * appends a character to the fastaVectorString. This will grow the string's
+ * interal buffer if necessary.
  *
  *  Inputs:
  *    vector: fastaVectorString to append a character to.
@@ -50,6 +47,5 @@ void fastaVectorStringDealloc(struct FastaVectorString *vector);
  *    true on allocation success, false on allocation failure.
  */
 bool fastaVectorStringAddChar(struct FastaVectorString *vector, const char c);
-
 
 #endif
