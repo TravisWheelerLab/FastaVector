@@ -10,12 +10,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY build)
 
 set(
-        PUBLIC_H_FILES
-
-        src/FastaVector.h
-)
-
-set(
         H_FILES
 
         src/FastaVector.h
@@ -46,7 +40,7 @@ set_target_properties(
         fastavector_static fastavector
 
         PROPERTIES
-        PUBLIC_HEADER ${PUBLIC_H_FILES}
+        PUBLIC_HEADER ${H_FILES}
 )
 
 install(TARGETS fastavector)
