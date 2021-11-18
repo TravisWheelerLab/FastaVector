@@ -10,6 +10,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY build)
 
 set(
+        PUBLIC_H_FILES
+
+        src/FastaVector.h
+)
+
+set(
         H_FILES
 
         src/FastaVector.h
@@ -35,19 +41,12 @@ add_library(
 
         ${C_FILES}
 )
-install(TARGETS fastavector LIBRARY)
 
-# Runs clang-format on the code
-add_custom_target(
-        format
-        COMMAND clang-format -i ${C_FILES} ${H_FILES}
-        VERBATIM
+set_target_properties(
+        fastavector_static fastavector
+
+        PROPERTIES
+        PUBLIC_HEADER ${PUBLIC_H_FILES}
 )
 
-# Checks whether clang-format needs to be run and sets a non-zero
-# exit code if so
-add_custom_target(
-        check-format
-        COMMAND clang-format --dry-run --Werror ${C_FILES} ${H_FILES}
-        VERBATIM
-)
+install(TARGETS fastavector)
