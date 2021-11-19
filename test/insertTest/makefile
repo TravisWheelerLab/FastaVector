@@ -1,9 +1,0 @@
-TEST_NAME = insertTest
-TEST_SRC	= $(TEST_NAME).c
-SRC 			= $(wildcard ../../src/*.c)
-CFLAGS 	= -std=c11 -fsanitize=address -Wall -mtune=native -g
-EXE 		= $(TEST_NAME).out
-
-.PHONY: $(TEST_NAME)
-insertTest: $(SRC)
-	gcc $(TEST_SRC) $(SRC) -o $(EXE) $(CFLAGS)
