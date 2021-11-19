@@ -8,8 +8,5 @@ var _fasta_vector_8h =
       [ "FASTA_VECTOR_FILE_WRITE_FAIL", "_fasta_vector_8h.html#a04946e9e120d4c0135cad694a5d62894a938c9d1336d185d1e1e7a6b341889a33", null ],
       [ "FASTA_VECTOR_FILE_READ_FAIL", "_fasta_vector_8h.html#a04946e9e120d4c0135cad694a5d62894ad9e35ef995330154ae605c6e0d446bbe", null ],
       [ "FASTA_VECTOR_ALLOCATION_FAIL", "_fasta_vector_8h.html#a04946e9e120d4c0135cad694a5d62894a116ac2d9dfde18173863252c5f42af14", null ]
-    ] ],
-    [ "fastaVectorAddCharToHeaderVector", "_fasta_vector_8h.html#a41139b40ffd5de5404465c96692ec183", null ],
-    [ "fastaVectorAddCharToSequenceVector", "_fasta_vector_8h.html#a5acc2978bd023c5254aa42e310b97f9d", null ],
-    [ "fastaVectorAddNewHeader", "_fasta_vector_8h.html#a6442813e3904d5a051733123de0aef2c", null ]
+    ] ]
 ];
