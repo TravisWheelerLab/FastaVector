@@ -13,69 +13,42 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-/**
- * @brief Primary struct that stores data for a given FASTA file.
- */
+/// @brief Primary struct that stores data for a given FASTA file.
 struct FastaVector {
-  /**
-   * @brief Storage for sequence data.
-   */
+  /// @brief Storage for sequence data.
   struct FastaVectorString sequence;
 
-  /**
-   * @brief Storage for header data.
-   */
+  /// @brief Storage for header data.
   struct FastaVectorString header;
 
-  /**
-   * @brief Storage for header and sequence metadata.
-   */
+  /// @brief Storage for header and sequence metadata.
   struct FastaVectorMetadataVector metadata;
 };
 
-/**
- * @brief Return codes used by `FastaVector` functions.
- */
+/// @brief Return codes used by `FastaVector` functions.
 enum FastaVectorReturnCode {
-  /**
-   * @brief The operation succeeded
-   */
+  /// @brief The operation succeeded
   FASTA_VECTOR_OK,
 
-  /**
-   * @brief The given file could not be opened
-   */
+  /// @brief The given file could not be opened
   FASTA_VECTOR_FILE_OPEN_FAIL,
 
-  /**
-   * @brief The given file could not be written
-   */
+  /// @brief The given file could not be written
   FASTA_VECTOR_FILE_WRITE_FAIL,
 
-  /**
-   * @brief The given file could not be read
-   */
+  /// @brief The given file could not be read
   FASTA_VECTOR_FILE_READ_FAIL,
 
-  /**
-   * @brief Memory allocation failed
-   *
-   */
+  /// @brief Memory allocation failed
   FASTA_VECTOR_ALLOCATION_FAIL
 };
 
-/**
- * @brief A position within a single sequence contained in a `FastaVector`.
- */
+/// @brief A position within a single sequence contained in a `FastaVector`.
 struct FastaVectorLocalPosition {
-  /**
-   * @brief The 0-based sequence index within the `FastaVector`.
-   */
+  /// @brief The 0-based sequence index within the `FastaVector`.
   size_t sequenceIndex;
 
-  /**
-   * @brief The 0-based position within the sequence.
-   */
+  /// @brief The 0-based position within the sequence.
   size_t positionInSequence;
 };
 
