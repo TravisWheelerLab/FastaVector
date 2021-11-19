@@ -4,7 +4,7 @@
 
 #define FASTA_VECTOR_FILE_READ_BUFFER_SIZE 1024
 
-// state of the finite state machine that parses the fasta files during reading.
+// The state of the FSM used to parse the FASTA files.
 enum FastaVectorFileReadState {
   FASTA_VECTOR_READ_HEADER,
   FASTA_VECTOR_READ_COMMENT,
@@ -12,7 +12,31 @@ enum FastaVectorFileReadState {
   FASTA_VECTOR_READ_ON_NEWLINE
 };
 
-/*function implementations*/
+// --------------------------------
+// Private function implementations
+// --------------------------------
+
+bool fastaVectorAddCharToSequenceVector(struct FastaVector *fastaVector,
+                                        char c) {
+  fastaVector->metadata.data[fastaVector->metadata.count - 1]
+      .sequenceEndPosition++;
+  return fastaVectorStringAddChar(&fastaVector->sequence, c);
+}
+
+bool fastaVectorAddCharToHeaderVector(struct FastaVector *fastaVector, char c) {
+  fastaVector->metadata.data[fastaVector->metadata.count - 1]
+      .headerEndPosition++;
+  return fastaVectorStringAddChar(&fastaVector->header, c);
+}
+
+bool fastaVectorAddNewHeader(struct FastaVector *fastaVector) {
+  return fastaVectorMetadataVectorAddMetadata(&fastaVector->metadata);
+}
+
+// -------------------------------
+// Public function implementations
+// -------------------------------
+
 enum FastaVectorReturnCode fastaVectorInit(struct FastaVector *fastaVector) {
   bool result = fastaVectorStringInit(&fastaVector->sequence) &&
                 fastaVectorStringInit(&fastaVector->header) &&
@@ -346,21 +370,4 @@ bool fastaVectorGetLocalSequencePositionFromGlobal(
   // if no sequence is found that contains the given position, return false to
   // show failure
   return false;
-}
-
-bool fastaVectorAddCharToSequenceVector(struct FastaVector *fastaVector,
-                                        char c) {
-  fastaVector->metadata.data[fastaVector->metadata.count - 1]
-      .sequenceEndPosition++;
-  return fastaVectorStringAddChar(&fastaVector->sequence, c);
-}
-
-bool fastaVectorAddCharToHeaderVector(struct FastaVector *fastaVector, char c) {
-  fastaVector->metadata.data[fastaVector->metadata.count - 1]
-      .headerEndPosition++;
-  return fastaVectorStringAddChar(&fastaVector->header, c);
-}
-
-bool fastaVectorAddNewHeader(struct FastaVector *fastaVector) {
-  return fastaVectorMetadataVectorAddMetadata(&fastaVector->metadata);
 }

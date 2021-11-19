@@ -216,35 +216,4 @@ bool fastaVectorGetLocalSequencePositionFromGlobal(
     const size_t globalSequencePosition,
     struct FastaVectorLocalPosition *localPosition);
 
-/**
- * @brief This is an advanced function and should not be used under normal
- * circumstances.
- *
- * Please review the implementation for fastaVectorAddSequenceToList to see an
- * example of how to use it.
- *
- */
-bool fastaVectorAddCharToSequenceVector(struct FastaVector *fastaVector,
-                                        char c);
-
-/**
- * @brief This is an advanced function and should not be used under normal
- * circumstances.
- *
- * Please review the implementation for fastaVectorAddSequenceToList to see an
- * example of how to use it.
- *
- */
-bool fastaVectorAddCharToHeaderVector(struct FastaVector *fastaVector, char c);
-
-/**
- * @brief This is an advanced function and should not be used under normal
- * circumstances.
- *
- * Please review the implementation for fastaVectorAddSequenceToList to see an
- * example of how to use it.
- *
- */
-bool fastaVectorAddNewHeader(struct FastaVector *fastaVector);
-
 #endif
