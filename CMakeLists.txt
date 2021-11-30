@@ -44,3 +44,20 @@ set_target_properties(
 )
 
 install(TARGETS fastavector)
+
+# ----------
+# Unit Tests
+# ----------
+
+include(CTest)
+list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
+
+if (BUILD_TESTING)
+        add_executable(
+                fileReadTest
+
+                ${C_FILES}
+                tests/fileReadTest/fileReadTest.c
+        )
+        add_test(NAME fileReadTest COMMAND fileReadTest)
+endif ()
