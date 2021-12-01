@@ -1,12 +1,10 @@
 #include "../../src/FastaVector.h"
 #include "../testAssert.h"
 #include <stdbool.h>
-#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <time.h>
 
-char buffer[2048];
+char buffer[4096];
 
 void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
               const size_t numHeaders, const char *fastaSrc) {

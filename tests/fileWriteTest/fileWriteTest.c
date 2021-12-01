@@ -1,6 +1,5 @@
 #include "../../src/FastaVector.h"
 #include "../testAssert.h"
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +7,7 @@
 
 char *buffer;
 
-void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc);
+void fastaVectorFileWriteTest(size_t numSequences, const char *fileSrc);
 void generateRandomFastaString(char *buffer, size_t length);
 void fastaVectorWriteStaticTest();
 
