@@ -8,6 +8,7 @@ set(CMAKE_C_STANDARD 17)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY build)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY build)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY build)
 
 set(
         H_FILES
@@ -53,11 +54,99 @@ include(CTest)
 list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
 if (BUILD_TESTING)
+        # fileReadTest
+
         add_executable(
                 fileReadTest
 
-                ${C_FILES}
                 tests/fileReadTest/fileReadTest.c
+                ${C_FILES}
+        )
+        target_compile_options(
+                fileReadTest
+
+                PRIVATE
+                -fsanitize=address
+                -mtune=native
+                -Wall
+                -Wextra
+                -g
+        )
+        target_link_options(
+                fileReadTest
+
+                PRIVATE
+                -fsanitize=address
         )
         add_test(NAME fileReadTest COMMAND fileReadTest)
+        set_tests_properties(
+                fileReadTest
+
+                PROPERTIES
+                WORKING_DIRECTORY tests/fileReadTest
+        )
+
+        # fileWriteTest
+
+        add_executable(
+                fileWriteTest
+
+                tests/fileWriteTest/fileWriteTest.c
+                ${C_FILES}
+        )
+        target_compile_options(
+                fileWriteTest
+
+                PRIVATE
+                -fsanitize=address
+                -mtune=native
+                -Wall
+                -Wextra
+                -g
+        )
+        target_link_options(
+                fileWriteTest
+
+                PRIVATE
+                -fsanitize=address
+        )
+        add_test(NAME fileWriteTest COMMAND fileWriteTest)
+        set_tests_properties(
+                fileWriteTest
+
+                PROPERTIES
+                WORKING_DIRECTORY tests/fileWriteTest
+        )
+
+        # insertTest
+
+        add_executable(
+                insertTest
+
+                tests/insertTest/insertTest.c
+                ${C_FILES}
+        )
+        target_compile_options(
+                insertTest
+
+                PRIVATE
+                -fsanitize=address
+                -mtune=native
+                -Wall
+                -Wextra
+                -g
+        )
+        target_link_options(
+                insertTest
+
+                PRIVATE
+                -fsanitize=address
+        )
+        add_test(NAME insertTest COMMAND insertTest)
+        set_tests_properties(
+                insertTest
+
+                PROPERTIES
+                WORKING_DIRECTORY tests/insertTest
+        )
 endif ()
