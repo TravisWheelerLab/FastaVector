@@ -39,6 +39,18 @@ jobs:
       - run: make -f Makefile_legacy CC=`which gcc-10`
       - run: make -f Makefile_legacy static CC=`which gcc-10`
 
+  check-tests:
+    runs-on: ubuntu-20.04
+    container:
+      image: traviswheelerlab/fastavector-build
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - uses: actions/checkout@v1
+      - run: cmake .
+      - run: make
+      - run: make test
+
   check-format:
     runs-on: ubuntu-20.04
     container:
