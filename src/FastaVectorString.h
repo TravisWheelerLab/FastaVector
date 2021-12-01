@@ -1,55 +1,63 @@
 #ifndef FASTA_VECTOR_STRING_H
 #define FASTA_VECTOR_STRING_H
 
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
-
 
 #define FASTA_VECTOR_CHAR_VECTOR_DEFAULT_CAPACITY 2048
 
-struct FastaVectorString{
+/**
+ * @brief A store for FASTA data, either headers or sequences.
+ */
+struct FastaVectorString {
+  /**
+   * @brief the array of characters held by the string.
+   */
   char *charData;
-  size_t capacity;
-  size_t count;
 
+  /**
+   * @brief the current maximum capacity of the string.
+   */
+  size_t capacity;
+
+  /**
+   * @brief the number of characters actually contained in the string.
+   */
+  size_t count;
 };
 
-/* Function:  fastaVectorStringInit
- * --------------------
- * initializes the data vector for the given fastaVectorString
+/**
+ * @relates FastaVectorString
+ * @brief initialize the given `FastaVectorString`.
  *
- *  Inputs:
- *    vector: fastaVectorString to initialize.
+ * @param vector the `FastaVectorString` to initialize
  *
- *  Returns:
- *    true on allocation success, false on allocation failure.
+ * @return true on success, false on failure
+ *
  */
 bool fastaVectorStringInit(struct FastaVectorString *vector);
 
-
-/* Function:  fastaVectorStringDealloc
- * --------------------
- * deallocates the member data for the vectorString.
+/**
+ * @relates FastaVectorString
+ * @brief deinitializes the given `FastaVectorString`.
  *
- *  Inputs:
- *    vector: fastaVectorString to deallocate.
+ * @param vector the `FastaVectorString` to deinitialize
+ *
  */
 void fastaVectorStringDealloc(struct FastaVectorString *vector);
 
-
-/* Function:  fastaVectorStringAddChar
- * --------------------
- * appends a character to the fastaVectorString. This will grow the string's interal buffer if necessary.
+/**
+ * @relates FastaVectorString
+ * @brief append a character to the `FastaVectorString`, growing the string's
+ * interal buffer if necessary.
  *
- *  Inputs:
- *    vector: fastaVectorString to append a character to.
- *    c:      character to append.
+ * @param vector the `FastaVectorString` to modify
+ * @param c the character to append
  *
- *  Returns:
- *    true on allocation success, false on allocation failure.
+ * @return true on success, false on failure
+ *
  */
 bool fastaVectorStringAddChar(struct FastaVectorString *vector, const char c);
-
 
 #endif

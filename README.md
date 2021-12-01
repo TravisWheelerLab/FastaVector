@@ -17,6 +17,26 @@ make
 This will produce both static and dynamic versions of the library in the
 `build/` directory. To install the dynamic version, use `make install`.
 
+## Tests
+
+The library includes a suite of unit tests. They are found in the `tests/`
+directory and can be run with `make test` after the build has been run
+(`make`).
+
+The test binaries end up in the `build/` directory with the rest of the
+output. You can run a suite on its own by running the corresponding binary
+from the correct test directory (since they use relative paths to access
+test fixtures). For example:
+
+```
+cmake .
+make
+cd tests/fileReadTest
+../../build/fileReadTest
+```
+
+### Legacy Build
+
 It is also possible to build using a handrolled Makefile, without CMake. To do
 this, use `Makefile_legacy`:
 
@@ -26,5 +46,5 @@ make -f Makefile_legacy
 
 ## Using
 
-For more info and the library API, please consult src/FastaVector.h
-
+For more info and the library API, please consult src/FastaVector.h and the
+test suite found in the `tests/` directory.
