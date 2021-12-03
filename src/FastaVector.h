@@ -61,7 +61,8 @@ struct FastaVectorLocalPosition {
  * @brief Initialize an empty `FastaVector` struct
  *
  * @param fastaVector Pointer to the vector to initialize
- * @return Possible returns are FASTA_VECTOR_OK and FASTA_VECTOR_ALLOCATION_FAIL.
+ * @return Possible returns are FASTA_VECTOR_OK and
+ * FASTA_VECTOR_ALLOCATION_FAIL.
  *
  * The struct itself must have been allocated before this function is called.
  *
@@ -72,23 +73,26 @@ enum FastaVectorReturnCode fastaVectorInit(struct FastaVector *fastaVector);
  * @relates FastaVector
  * @brief Deallocates the data contained in the `FastaVector` member data.
  *
- * @param fastaVector Pointer to the FastaVector struct whose member data will be deallocated.
+ * @param fastaVector Pointer to the FastaVector struct whose member data will
+ * be deallocated.
  *
  * This function does not deallocate (free) the `FastaVector` itself, only the
- * member data. This means that if the the FastaVector struct its self was dynamically allocated,
- * the struct will still need to be freed manually.
+ * member data. This means that if the the FastaVector struct its self was
+ * dynamically allocated, the struct will still need to be freed manually.
  *
  */
 void fastaVectorDealloc(struct FastaVector *fastaVector);
 
 /**
  * @relates FastaVector
- * @brief Attempts to load the data inside the given fasta file into the given FastaVector struct.
+ * @brief Attempts to load the data inside the given fasta file into the given
+ * FastaVector struct.
  *
  * @param fileSrc the path of the FASTA file to load
  * @param fastaVector Struct to load the FASTA data into.
  *
- * @return Possible returns are FASTA_VECTOR_OK, FASTA_VECTOR_ALLOCATION_FAIL, and FASTA_VECTOR_FILE_OPEN_FAIL.
+ * @return Possible returns are FASTA_VECTOR_OK, FASTA_VECTOR_ALLOCATION_FAIL,
+ * and FASTA_VECTOR_FILE_OPEN_FAIL.
  *
  * Loads its full contents into the initialized fasta vector. This function
  * takes any properly formed fasta file, and loads all headers and sequences.
@@ -100,13 +104,16 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
 
 /**
  * @relates FastaVector
- * @brief Write the data contained in a  `FastaVector` struct to the given file location.
+ * @brief Write the data contained in a  `FastaVector` struct to the given file
+ * location.
  *
- * @param filePath Path of the file to be written. This string should be null-terminated.
+ * @param filePath Path of the file to be written. This string should be
+ * null-terminated.
  * @param fastaVector the FastaVector struct to be written.
  * @param fileLineLength maximum number of characters per line of sequence
  *
- * @return Possible returns are FASTA_VECTOR_OK and FASTA_VECTOR_FILE_WRITE_FAIL.
+ * @return Possible returns are FASTA_VECTOR_OK and
+ * FASTA_VECTOR_FILE_WRITE_FAIL.
  *
  * This function will overwrite the file at the given path.
  *
@@ -143,7 +150,8 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
  *
  * @param fastaVector the `FastaVector` to read a header from.
  * @param headerIndex the index of the header to be retrieved (zero indexed).
- * @param headerPtr pointer to the char pointer that will be set to the start of the header.
+ * @param headerPtr pointer to the char pointer that will be set to the start of
+ * the header.
  * @param headerLength pointer to store the header length into.
  *
  *
@@ -159,8 +167,10 @@ void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
  * @brief Gets a sequence from the given `FastaVector`.
  *
  * @param fastaVector the `FastaVector` to read a sequence from.
- * @param sequenceIndex the index of the sequence to be retrieved (zero-indexed).
- * @param sequencePtr pointer to the char pointer that will be set to the start of the sequence.
+ * @param sequenceIndex the index of the sequence to be retrieved
+ * (zero-indexed).
+ * @param sequencePtr pointer to the char pointer that will be set to the start
+ * of the sequence.
  * @param sequenceLength pointer to store the sequence length into.
  *
  * TODO: Should we return a statuc code in case the index was out of bounds?
@@ -172,7 +182,8 @@ void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,
 
 /**
  * @relates FastaVector
- * @brief Given a global position across all sequences in the FastaVector, returns the sequence index and position in that sequence.
+ * @brief Given a global position across all sequences in the FastaVector,
+ * returns the sequence index and position in that sequence.
  *
  * @param fastaVector the `FastaVector` to inspect
  * @param globalSequencePosition position across the entire sequence collection.
