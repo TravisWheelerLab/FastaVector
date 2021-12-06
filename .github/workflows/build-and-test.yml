@@ -62,12 +62,12 @@ jobs:
       - run: ./tool/run-format.sh
       - uses: EndBug/add-and-commit@v7
         with:
-          add: src/*.{c,h}
+          add: src/
           author_name: Formatter
           author_email: actions@users.noreply.github.com
           message: Run formatter
-          pathspec_error_handling: exitImmediately
-          pull_strategy: NO-PULL
+          pathspec_error_handling: ignore
+          pull: NO-PULL
 
   check-format:
     needs: run-format
