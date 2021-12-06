@@ -57,6 +57,7 @@ jobs:
       image: traviswheelerlab/fastavector-build
       volumes:
         - ${{ github.workspace }}:/code
+    steps:
       - uses: actions/checkout@v1
       - run: ./tool/run-format.sh
       - uses: EndBug/add-and-commit@v7
@@ -78,3 +79,4 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: ./tool/check-format.sh
+
