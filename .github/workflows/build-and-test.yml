@@ -51,7 +51,25 @@ jobs:
       - run: make
       - run: make test
 
+  run-format:
+    runs-on: ubuntu-20.04
+    container:
+      image: traviswheelerlab/fastavector-build
+      volumes:
+        - ${{ github.workspace }}:/code
+      - uses: actions/checkout@v1
+      - run: ./tool/run-format.sh
+        uses: EndBug/add-and-commit@v7
+        with:
+          add: src/*.{c,h}
+          author_name: Formatter
+          author_email: actions@users.noreply.github.com
+          message: Run formatter
+          pathspec_error_handling: exitImmediately
+          pull_strategy: NO-PULL
+
   check-format:
+    needs: run-format
     runs-on: ubuntu-20.04
     container:
       image: traviswheelerlab/fastavector-build
