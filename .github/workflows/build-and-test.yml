@@ -59,15 +59,15 @@ jobs:
         - ${{ github.workspace }}:/code
     steps:
       - uses: actions/checkout@v2
-      - run: ./tool/run-format.sh
-      - uses: EndBug/add-and-commit@v7
-        with:
-          add: src/
-          author_name: Formatter
-          author_email: actions@users.noreply.github.com
-          message: Run formatter
-          pathspec_error_handling: ignore
-          pull: NO-PULL
+      - name: Run formatter
+        run: ./tool/run-format.sh
+      - name: Push back to branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add src/
+          git commit -m "Format code"
+          git push
 
   check-format:
     needs: run-format
