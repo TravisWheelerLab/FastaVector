@@ -22,8 +22,8 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add src/
-          git commit -m "Format code"
-          git push || true
+          git commit -m "Format code" || true
+          git push
 
   check-format:
     needs: run-format
