@@ -1,4 +1,4 @@
-name: Build and Test
+name: Format
 
 on: [pull_request]
 
@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check out the head branch
-        run: git checkout ${{ github.head_ref }}
+        run: |
+            git fetch origin ${{ github.head_ref }}
+            git checkout ${{ github.head_ref }}
       - name: Run formatter
         run: ./tool/run-format.sh
       - name: Push back to branch
