@@ -7,7 +7,7 @@
 // The state of the FSM used to parse the FASTA files.
 enum FastaVectorFileReadState {
   FASTA_VECTOR_READ_HEADER,
-  FASTA_VECTOR_READ_COMMENT,
+      FASTA_VECTOR_READ_COMMENT,
   FASTA_VECTOR_READ_SEQUENCE,
   FASTA_VECTOR_READ_ON_NEWLINE
 };
