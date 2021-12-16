@@ -15,31 +15,31 @@
 
 /// @brief Primary struct that stores data for a given FASTA file.
 struct FastaVector {
-  /// @brief Storage for sequence data.
+  /// @brief Storage for the fasta sequence data.
   struct FastaVectorString sequence;
 
-  /// @brief Storage for header data.
+  /// @brief Storage for the fasta header data.
   struct FastaVectorString header;
 
-  /// @brief Storage for header and sequence metadata.
+  /// @brief Storage for the metadata describing the FastaVector.
   struct FastaVectorMetadataVector metadata;
 };
 
 /// @brief Return codes used by `FastaVector` functions.
 enum FastaVectorReturnCode {
-  /// @brief The operation succeeded
+  /// @brief The operation completed successfully
   FASTA_VECTOR_OK,
 
-  /// @brief The given file could not be opened
+  /// @brief A given file could not be opened
   FASTA_VECTOR_FILE_OPEN_FAIL,
 
-  /// @brief The given file could not be written
+  /// @brief An error was encountered when attempting to write to a file.
   FASTA_VECTOR_FILE_WRITE_FAIL,
 
-  /// @brief The given file could not be read
+  /// @brief An error was encountered when attempting to read from a file
   FASTA_VECTOR_FILE_READ_FAIL,
 
-  /// @brief Memory allocation failed
+  /// @brief A dynamic memory allocation was attempted, but failed.
   FASTA_VECTOR_ALLOCATION_FAIL
 };
 
@@ -60,8 +60,9 @@ struct FastaVectorLocalPosition {
  * @relates FastaVector
  * @brief Initialize an empty `FastaVector` struct
  *
- * @param fastaVector the vector to initialize
- * @return a status code
+ * @param fastaVector Pointer to the vector to initialize
+ * @return Possible returns are FASTA_VECTOR_OK and
+ * FASTA_VECTOR_ALLOCATION_FAIL.
  *
  * The struct itself must have been allocated before this function is called.
  *
@@ -70,37 +71,31 @@ enum FastaVectorReturnCode fastaVectorInit(struct FastaVector *fastaVector);
 
 /**
  * @relates FastaVector
- * @brief Deinitialize `FastaVector` member data
+ * @brief Deallocates the data contained in the `FastaVector` member data.
  *
- * @param fastaVector the vector to deinitialize
+ * @param fastaVector Pointer to the FastaVector struct whose member data will
+ * be deallocated.
  *
  * This function does not deallocate (free) the `FastaVector` itself, only the
- * member data.
+ * member data. This means that if the the FastaVector struct its self was
+ * dynamically allocated, the struct will still need to be freed manually.
  *
  */
 void fastaVectorDealloc(struct FastaVector *fastaVector);
 
 /**
  * @relates FastaVector
- * @brief Load the given fasta file.
+ * @brief Attempts to load the data inside the given fasta file into the given
+ * FastaVector struct.
  *
  * @param fileSrc the path of the FASTA file to load
- * @param fastaVector the vector to load the fasta into
- * @param nullTerminateHeaders whether null characters should be added to
- * headers
- * @param nullTerminateSequences whether null characters should be added to
- * sequences
+ * @param fastaVector Struct to load the FASTA data into.
  *
- * @return a status code
+ * @return Possible returns are FASTA_VECTOR_OK, FASTA_VECTOR_ALLOCATION_FAIL,
+ * and FASTA_VECTOR_FILE_OPEN_FAIL.
  *
  * Loads its full contents into the initialized fasta vector. This function
  * takes any properly formed fasta file, and loads all headers and sequences.
- *
- * If `nullTerminateHeaders` is set to true, then null characters ('\0') are
- * added after each header to easily denote the end of the header (useful for
- * printing). If `nullTerminateSequences` is set to true, null characters ('\0')
- * are added after each sequence to easily separate them (useful for printing or
- * separating the sequences in an index).
  *
  */
 enum FastaVectorReturnCode
@@ -109,13 +104,16 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
 
 /**
  * @relates FastaVector
- * @brief Write a `FastaVector` to a file.
+ * @brief Write the data contained in a  `FastaVector` struct to the given file
+ * location.
  *
- * @param filePath path of the file to be written
- * @param fastaVector the FASTA data to be written
+ * @param filePath Path of the file to be written. This string should be
+ * null-terminated.
+ * @param fastaVector the FastaVector struct to be written.
  * @param fileLineLength maximum number of characters per line of sequence
  *
- * @return a status code
+ * @return Possible returns are FASTA_VECTOR_OK and
+ * FASTA_VECTOR_FILE_WRITE_FAIL.
  *
  * This function will overwrite the file at the given path.
  *
@@ -128,24 +126,17 @@ fastaVectorWriteFasta(const char *restrict const filePath,
  * @relates FastaVector
  * @brief Add a header and sequence to the given `FastaVector`.
  *
- * @param fastaVector the `FastaVector` to modify
- * @param header pointer to the first character in the header
- * @param headerLength length of the header, in bytes
- * @param sequence pointer to the first character in the sequence
- * @param sequenceLength length of the sequence, in bytes
+ * @param fastaVector the `FastaVector` to append the header and sequence to.
+ * @param header pointer to the first character in the header.
+ * @param headerLength length of the header, in characters.
+ * @param sequence pointer to the first character in the sequence.
+ * @param sequenceLength length of the sequence, in characters.
  *
- * @return a status code
+ * @return Possible returns are FASTA_VECTOR_OK or FASTA_VECTOR_ALLOCATION_FAIL.
  *
  * The header should not include the leading ">" character, it will be added
  * automatically. The header and sequence will be automatically null-terminated
  * upon insertion into the `FastaVector`.
- *
- * The return value is one of:
- *
- *   * `FASTA_VECTOR_OK`
- *   * `FASTA_VECTOR_ALLOCATION_FAIL`
- *
- * TODO: What if the original FV was not null-terminated?
  *
  */
 enum FastaVectorReturnCode
@@ -157,15 +148,12 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
  * @relates FastaVector
  * @brief Gets a header from the given `FastaVector`.
  *
- * @param fastaVector the `FastaVector` to read
- * @param headerIndex the index of the header to be retrieved
- * @param headerPtr pointer to store the header
- * @param headerLength pointer to store the header length
+ * @param fastaVector the `FastaVector` to read a header from.
+ * @param headerIndex the index of the header to be retrieved (zero indexed).
+ * @param headerPtr pointer to the char pointer that will be set to the start of
+ * the header.
+ * @param headerLength pointer to store the header length into.
  *
- * If the FastaVector was built with null-terminated headers, the null
- * terminator will be included in the resulting `headerPtr` and `headerLength`.
- *
- * The index is 0-based so, for example, index 4 is the 5th header.
  *
  * TODO: Should we return a statuc code in case the index was out of bounds?
  *
@@ -178,16 +166,14 @@ void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
  * @relates FastaVector
  * @brief Gets a sequence from the given `FastaVector`.
  *
- * @param fastaVector the `FastaVector` to read
+ * @param fastaVector the `FastaVector` to read a sequence from.
  * @param sequenceIndex the index of the sequence to be retrieved
- * @param sequencePtr pointer to store the sequence
- * @param sequenceLength pointer to store the sequence length
+ * (zero-indexed).
+ * @param sequencePtr pointer to the char pointer that will be set to the start
+ * of the sequence.
+ * @param sequenceLength pointer to store the sequence length into.
  *
- * If the FastaVector was built with null-terminated sequences, the null
- * terminator will be included in the resulting `sequencePtr` and
- * `sequenceLength`.
- *
- * The index is 0-based so, for example, index 4 is the 5th sequence.
+ * TODO: Should we return a statuc code in case the index was out of bounds?
  *
  */
 void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,
@@ -196,10 +182,11 @@ void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,
 
 /**
  * @relates FastaVector
- * @brief Gets a local sequence index and position from a `FastaVector`.
+ * @brief Given a global position across all sequences in the FastaVector,
+ * returns the sequence index and position in that sequence.
  *
  * @param fastaVector the `FastaVector` to inspect
- * @param globalSequencePosition position across the entire sequence collection
+ * @param globalSequencePosition position across the entire sequence collection.
  * @param localPosition a pointer to the struct to load the local position data
  * into
  *
