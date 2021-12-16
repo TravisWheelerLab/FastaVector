@@ -1,0 +1,38 @@
+name: Format
+
+on: [pull_request]
+
+jobs:
+  run-format:
+    runs-on: ubuntu-20.04
+    container:
+      image: traviswheelerlab/fastavector-build
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check out the head branch
+        run: |
+            git fetch origin ${{ github.head_ref }}
+            git checkout ${{ github.head_ref }}
+      - name: Run formatter
+        run: ./tool/run-format.sh
+      - name: Push back to branch
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add src/
+          git commit -m "Format code" || true
+          git push
+
+  check-format:
+    needs: run-format
+    runs-on: ubuntu-20.04
+    container:
+      image: traviswheelerlab/fastavector-build
+      volumes:
+        - ${{ github.workspace }}:/code
+    steps:
+      - uses: actions/checkout@v1
+      - run: ./tool/check-format.sh
+

@@ -17,6 +17,15 @@ make
 This will produce both static and dynamic versions of the library in the
 `build/` directory. To install the dynamic version, use `make install`.
 
+### Legacy Build
+
+It is also possible to build using a handrolled Makefile, without CMake. To do
+this, use `Makefile_legacy`:
+
+```
+make -f Makefile_legacy
+```
+
 ## Tests
 
 The library includes a suite of unit tests. They are found in the `tests/`
@@ -35,16 +44,17 @@ cd tests/fileReadTest
 ../../build/fileReadTest
 ```
 
-### Legacy Build
+## Formatting
 
-It is also possible to build using a handrolled Makefile, without CMake. To do
-this, use `Makefile_legacy`:
+Code is formatted automatically using `clang-format` version 12.0.0
+or later. To run the formatter, using `./tool/run-format.sh`. To check whether
+formatting is required, use `./tool/check-format.sh`.
 
-```
-make -f Makefile_legacy
-```
+Note that formatting will occur automatically on pull requests, so manually
+running the formatter is unnecessary.
 
 ## Using
 
 For more info and the library API, please consult src/FastaVector.h and the
 test suite found in the `tests/` directory.
+
