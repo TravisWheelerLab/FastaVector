@@ -100,7 +100,7 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  */
 #ifdef __cplusplus
 enum FastaVectorReturnCode
-fastaVectorReadFasta(const char * __restrict__ const fileSrc,
+fastaVectorReadFasta(const char *__restrict__ const fileSrc,
                      struct FastaVector *fastaVector);
 #else
 enum FastaVectorReturnCode
@@ -126,7 +126,7 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
  */
 #ifdef __cplusplus
 enum FastaVectorReturnCode
-fastaVectorWriteFasta(const char * __restrict__ const filePath,
+fastaVectorWriteFasta(const char *__restrict__ const filePath,
                       struct FastaVector *fastaVector, uint32_t fileLineLength);
 #else
 enum FastaVectorReturnCode
