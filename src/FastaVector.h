@@ -98,9 +98,15 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  * takes any properly formed fasta file, and loads all headers and sequences.
  *
  */
+#ifdef __cplusplus
+enum FastaVectorReturnCode
+fastaVectorReadFasta(const char * __restrict__ const fileSrc,
+                     struct FastaVector *fastaVector);
+#else
 enum FastaVectorReturnCode
 fastaVectorReadFasta(const char *restrict const fileSrc,
                      struct FastaVector *fastaVector);
+#endif
 
 /**
  * @relates FastaVector
@@ -118,9 +124,15 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
  * This function will overwrite the file at the given path.
  *
  */
+#ifdef __cplusplus
+enum FastaVectorReturnCode
+fastaVectorWriteFasta(const char * __restrict__ const filePath,
+                      struct FastaVector *fastaVector, uint32_t fileLineLength);
+#else
 enum FastaVectorReturnCode
 fastaVectorWriteFasta(const char *restrict const filePath,
                       struct FastaVector *fastaVector, uint32_t fileLineLength);
+#endif
 
 /**
  * @relates FastaVector
