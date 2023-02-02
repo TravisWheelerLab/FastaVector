@@ -80,16 +80,6 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
       if (charFromFile == '>') {
         readState = FASTA_VECTOR_READ_HEADER;
 
-        // null terminate the previous sequence (if this isn't the first header)
-        if (fastaVector->metadata.count != 0) {
-          bool addCharResult =
-              fastaVectorAddCharToSequenceVector(fastaVector, '\0');
-          if (__builtin_expect(!addCharResult, false)) {
-            fclose(fastaFile);
-            return FASTA_VECTOR_ALLOCATION_FAIL;
-          }
-        }
-
         bool addHeaderResult = fastaVectorAddNewHeader(fastaVector);
         if (__builtin_expect(!addHeaderResult, false)) {
           fclose(fastaFile);
@@ -161,12 +151,6 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
     }
   }
 
-  // null terminate this last sequence before we're done.
-  bool addCharResult = fastaVectorAddCharToSequenceVector(fastaVector, '\0');
-  if (__builtin_expect(!addCharResult, false)) {
-    fclose(fastaFile);
-    return FASTA_VECTOR_ALLOCATION_FAIL;
-  }
 
   fclose(fastaFile);
   return FASTA_VECTOR_OK;
@@ -231,19 +215,6 @@ fastaVectorWriteFasta(const char *restrict const fileSrc,
           (sequenceWritePosition + fileLineLength) < sequenceEndPosition
               ? fileLineLength
               : sequenceEndPosition - sequenceWritePosition;
-
-      size_t sequenceLineEndPosition = sequenceWritePosition + fileLineLength;
-      // if the sequence appears to be null terminated, don't write that last
-      // character (the null terminator)
-      if ((sequenceLineEndPosition == sequenceEndPosition)) {
-        bool sequenceIsNullTerminated =
-            fastaVector->sequence.charData[sequenceLineEndPosition - 1] == '\0';
-        // if the sequence is null terminated, decrease the line length by 1 to
-        // not write the null terminator.
-        if (sequenceIsNullTerminated) {
-          thisLineLength--;
-        }
-      }
 
       size_t bytesWritten =
           fwrite(fastaVector->sequence.charData + sequenceWritePosition,
