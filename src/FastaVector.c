@@ -272,12 +272,6 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
       return FASTA_VECTOR_ALLOCATION_FAIL;
     }
   }
-  // add the null terminator to end the sequence
-  bool addSequenceCharResult =
-      fastaVectorAddCharToSequenceVector(fastaVector, '\0');
-  if (__builtin_expect(!addSequenceCharResult, false)) {
-    return FASTA_VECTOR_ALLOCATION_FAIL;
-  }
 
   return FASTA_VECTOR_OK;
 }
