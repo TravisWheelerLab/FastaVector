@@ -78,19 +78,20 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
 
   char **headers = malloc(numSequences * sizeof(char *));
   char **sequences = malloc(numSequences * sizeof(char *));
+  uint64_t *sequenceLengths = malloc(numSequences * sizeof(uint64_t));
 
   // populate the fastaVector
   for (size_t sequenceNum = 0; sequenceNum < numSequences; sequenceNum++) {
     const size_t headerLength = rand() % 100 + 1;
     const size_t sequenceLength = (rand() % 100) + 1;
     headers[sequenceNum] = malloc((headerLength + 1) * sizeof(char));
-    sequences[sequenceNum] = malloc((sequenceLength + 1) * sizeof(char));
+    sequences[sequenceNum] = malloc((sequenceLength) * sizeof(char));
+    sequenceLengths[sequenceNum] = sequenceLength;
     generateRandomFastaString(headers[sequenceNum], headerLength);
     generateRandomFastaString(sequences[sequenceNum], sequenceLength);
 
-    // null terminate the header and sequence in the
+    // null terminate the header
     headers[sequenceNum][headerLength] = 0;
-    sequences[sequenceNum][sequenceLength] = 0;
 
     returnCode = fastaVectorAddSequenceToList(
         &fastaVector, headers[sequenceNum], headerLength,
@@ -103,7 +104,7 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
     const char *headerPtr = headers[sequenceNum];
     const char *sequencePtr = sequences[sequenceNum];
     const size_t headerLength = strlen(headers[sequenceNum]);
-    const size_t sequenceLength = strlen(sequences[sequenceNum]);
+    const size_t sequenceLength = sequenceLengths[sequenceNum];
 
     char *headerFromVector;
     char *sequenceFromVector;
@@ -122,9 +123,9 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
                      buffer);
     sprintf(buffer, "sequence was supposed to be length %zu, but got %zu.",
             sequenceLength, sequenceLengthFromVector);
-    testAssertString((sequenceLength + 1) == sequenceLengthFromVector, buffer);
-    sprintf(buffer, "sequence was supposed to match %s, but got %.*s.",
-            sequencePtr, (int)sequenceLengthFromVector, sequenceFromVector);
+    testAssertString((sequenceLength) == sequenceLengthFromVector, buffer);
+    sprintf(buffer, "sequence was supposed to match %.*s, but got %.*s.",
+            (int)sequenceLength, sequencePtr, (int)sequenceLengthFromVector, sequenceFromVector);
     testAssertString(
         strncmp(sequenceFromVector, sequencePtr, sequenceLength) == 0, buffer);
   }
@@ -250,6 +251,7 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
   }
   free(headers);
   free(sequences);
+  free(sequenceLengths);
   fastaVectorDealloc(&fastaVector);
   fastaVectorDealloc(&fastaReadVector);
 }
