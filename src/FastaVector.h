@@ -182,10 +182,11 @@ void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
  * @param sequenceIndex the index of the sequence to be retrieved
  * (zero-indexed).
  * @param sequencePtr pointer to the char pointer that will be set to the start
- * of the sequence.
- * @param sequenceLength pointer to store the sequence length into.
+ * of the sequence. Ptr will be null if sequenceIndex was out of range.
+ * @param sequenceLength pointer to store the sequence length into, or 0 if
+ * if sequenceIndex was out of range.
  *
- * TODO: Should we return a statuc code in case the index was out of bounds?
+ * TODO: Should we return a static code in case the index was out of bounds?
  *
  */
 void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,

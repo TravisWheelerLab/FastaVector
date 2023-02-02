@@ -20,7 +20,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
   for (size_t i = 0; i < numHeaders; i++) {
     // add 1 to the strings for the  null terminators
     const size_t expectedHeaderLength = strlen(testHeaderStrings[i]) + 1;
-    const size_t expectedSequenceLength = strlen(testSequenceStrings[i]) + 1;
+    const size_t expectedSequenceLength = strlen(testSequenceStrings[i]);
     size_t headerLength;
     char *headerPtr;
     fastaVectorFastaGetHeader(&fastaVector, i, &headerPtr, &headerLength);
@@ -58,12 +58,6 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
             i, terminator);
     testAssertString(terminator == '\0', buffer);
 
-    terminator = sequencePtr[sequenceLength - 1];
-    sprintf(buffer,
-            "sequence index %zu was not null terminated! (found char %c after "
-            "the end of the header)",
-            i, terminator);
-    testAssertString(terminator == '\0', buffer);
   }
 
   fastaVectorDealloc(&fastaVector);

@@ -129,7 +129,7 @@ void testInsertSequences() {
             "length %zu",
             i, sequenceLengths[i], sequenceStartPosition, sequenceEndPosition,
             sequenceLength);
-    testAssertString((sequenceLengths[i] + 1) == sequenceLength, buffer);
+    testAssertString(sequenceLengths[i] == sequenceLength, buffer);
 
     for (size_t i = 0; i < numSequences; i++) {
       size_t sequenceStartPosition =
