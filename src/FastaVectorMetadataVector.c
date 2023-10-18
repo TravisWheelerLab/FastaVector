@@ -43,6 +43,9 @@ bool fastaVectorMetadataVectorResize(struct FastaVectorMetadataVector *vector) {
 }
 
 void fastaVectorMetadataVectorDealloc(
-    struct FastaVectorMetadataVector *vector) {
-  free(vector->data);
+  struct FastaVectorMetadataVector *vector) {
+  if(vector->data != NULL){
+    free(vector->data);
+    vector->data = NULL;
+  }
 }

@@ -10,7 +10,10 @@ bool fastaVectorStringInit(struct FastaVectorString *vector) {
 }
 
 void fastaVectorStringDealloc(struct FastaVectorString *vector) {
-  free(vector->charData);
+  if(vector->charData != NULL){
+    free(vector->charData);
+    vector->charData = NULL;
+  }
 }
 
 bool fastaVectorStringAddChar(struct FastaVectorString *vector, const char c) {
