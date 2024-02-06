@@ -46,6 +46,10 @@ set_target_properties(
 
 install(TARGETS fastavector)
 
+install(FILES ${H_FILES}
+    DESTINATION include
+)
+
 # ----------
 # Unit Tests
 # ----------
