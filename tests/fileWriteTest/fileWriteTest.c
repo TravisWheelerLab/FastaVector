@@ -125,7 +125,8 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
             sequenceLength, sequenceLengthFromVector);
     testAssertString((sequenceLength) == sequenceLengthFromVector, buffer);
     sprintf(buffer, "sequence was supposed to match %.*s, but got %.*s.",
-            (int)sequenceLength, sequencePtr, (int)sequenceLengthFromVector, sequenceFromVector);
+            (int)sequenceLength, sequencePtr, (int)sequenceLengthFromVector,
+            sequenceFromVector);
     testAssertString(
         strncmp(sequenceFromVector, sequencePtr, sequenceLength) == 0, buffer);
   }
