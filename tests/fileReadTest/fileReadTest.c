@@ -57,7 +57,6 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
             "the end of the header)",
             i, terminator);
     testAssertString(terminator == '\0', buffer);
-
   }
 
   fastaVectorDealloc(&fastaVector);
