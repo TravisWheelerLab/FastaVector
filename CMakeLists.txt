@@ -27,28 +27,38 @@ set(
 
 add_library(
         fastavector_static STATIC
-
         ${C_FILES}
 )
 
 add_library(
         fastavector SHARED
-
         ${C_FILES}
 )
 
+# Specify different sets of header files for shared and static libraries
 set_target_properties(
-        fastavector_static fastavector
-
+        fastavector
         PROPERTIES
-        PUBLIC_HEADER ${H_FILES}
+        PUBLIC_HEADER src/FastaVector.h
 )
 
-install(TARGETS fastavector)
+# set_target_properties(
+#         fastavector_static
+#         PROPERTIES
+#         PUBLIC_HEADER src/FastaVector.h
+# )
 
-install(FILES ${H_FILES}
+install(TARGETS fastavector fastavector_static)
+
+# Install only the necessary header files for each library
+install(FILES src/FastaVectorMetadataVector.h
     DESTINATION include
 )
+
+install(FILES src/FastaVectorString.h
+    DESTINATION include
+)
+
 
 # ----------
 # Unit Tests
