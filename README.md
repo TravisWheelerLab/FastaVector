@@ -17,6 +17,12 @@ make
 This will produce both static and dynamic versions of the library in the
 `build/` directory. To install the dynamic version, use `make install`.
 
+The necessary headers can be found in the src/ directory. The headers,
+along with the shared library can be installed using:
+```
+make install
+```
+
 ### Legacy Build
 
 It is also possible to build using a handrolled Makefile, without CMake. To do
