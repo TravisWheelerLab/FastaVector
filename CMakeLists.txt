@@ -80,7 +80,6 @@ if (BUILD_TESTING)
                 fileReadTest
 
                 PRIVATE
-                -fsanitize=address
                 -mtune=native
                 -Wall
                 -Wextra
@@ -90,7 +89,6 @@ if (BUILD_TESTING)
                 fileReadTest
 
                 PRIVATE
-                -fsanitize=address
         )
         add_test(NAME fileReadTest COMMAND fileReadTest)
         set_tests_properties(
@@ -112,7 +110,6 @@ if (BUILD_TESTING)
                 fileWriteTest
 
                 PRIVATE
-                -fsanitize=address
                 -mtune=native
                 -Wall
                 -Wextra
@@ -122,7 +119,6 @@ if (BUILD_TESTING)
                 fileWriteTest
 
                 PRIVATE
-                -fsanitize=address
         )
         add_test(NAME fileWriteTest COMMAND fileWriteTest)
         set_tests_properties(
@@ -144,7 +140,6 @@ if (BUILD_TESTING)
                 insertTest
 
                 PRIVATE
-                -fsanitize=address
                 -mtune=native
                 -Wall
                 -Wextra
@@ -154,7 +149,6 @@ if (BUILD_TESTING)
                 insertTest
 
                 PRIVATE
-                -fsanitize=address
         )
         add_test(NAME insertTest COMMAND insertTest)
         set_tests_properties(
