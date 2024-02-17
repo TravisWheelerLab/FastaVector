@@ -80,11 +80,22 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
       if (charFromFile == '>') {
         readState = FASTA_VECTOR_READ_HEADER;
 
+        // add a null seperator to the sequence if this isn't the first header.
+        if (fastaVector->metadata.count != 0) {
+          bool addSequenceTerminatorResult =
+              fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+          if (__builtin_expect(!addSequenceTerminatorResult, false)) {
+            fclose(fastaFile);
+            return FASTA_VECTOR_ALLOCATION_FAIL;
+          }
+        }
+
         bool addHeaderResult = fastaVectorAddNewHeader(fastaVector);
         if (__builtin_expect(!addHeaderResult, false)) {
           fclose(fastaFile);
           return FASTA_VECTOR_ALLOCATION_FAIL;
         }
+
       } else if (charFromFile == ';') {
         readState = FASTA_VECTOR_READ_COMMENT;
       } else if (__builtin_expect(charFromFile >= ' ',
@@ -151,6 +162,14 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
     }
   }
 
+  // add the final sequence terminator
+  bool addSequenceTerminatorResult =
+      fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+  if (__builtin_expect(!addSequenceTerminatorResult, false)) {
+    fclose(fastaFile);
+    return FASTA_VECTOR_ALLOCATION_FAIL;
+  }
+
   fclose(fastaFile);
   return FASTA_VECTOR_OK;
 }
@@ -205,8 +224,9 @@ fastaVectorWriteFasta(const char *restrict const fileSrc,
     // write the sequence, line by line
     const size_t sequenceStartPosition =
         i == 0 ? 0 : fastaVector->metadata.data[i - 1].sequenceEndPosition;
+    // end 1 early due to sequence null seperator
     const size_t sequenceEndPosition =
-        fastaVector->metadata.data[i].sequenceEndPosition;
+        fastaVector->metadata.data[i].sequenceEndPosition - 1;
 
     size_t sequenceWritePosition = sequenceStartPosition;
     while (sequenceWritePosition < sequenceEndPosition) {
@@ -272,6 +292,13 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
     }
   }
 
+  // write the sequence null seperator
+  bool addSequenceCharResult =
+      fastaVectorAddCharToSequenceVector(fastaVector, '\0');
+  if (__builtin_expect(!addSequenceCharResult, false)) {
+    return FASTA_VECTOR_ALLOCATION_FAIL;
+  }
+
   return FASTA_VECTOR_OK;
 }
 
@@ -312,7 +339,8 @@ void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,
     const size_t sequenceEndPosition =
         fastaVector->metadata.data[sequenceIndex].sequenceEndPosition;
 
-    *sequenceLength = sequenceEndPosition - sequenceStartPosition;
+    //-1 is for the null seperator
+    *sequenceLength = (sequenceEndPosition - sequenceStartPosition) - 1;
     *sequencePtr = &fastaVector->sequence.charData[sequenceStartPosition];
   }
 }
