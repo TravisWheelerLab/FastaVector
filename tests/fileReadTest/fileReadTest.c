@@ -62,7 +62,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
   fastaVectorDealloc(&fastaVector);
 }
 
-int main(int argc, char **argv) {
+int main() {
   char *testHeaderStrings[7];
   char *testSequenceStrings[7];
 

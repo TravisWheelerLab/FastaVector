@@ -109,7 +109,7 @@ void testInsertSequences() {
     size_t sequenceStartPosition =
         i == 0 ? 0 : fastaVector.metadata.data[i - 1].sequenceEndPosition;
     size_t sequenceEndPosition =
-        fastaVector.metadata.data[i].sequenceEndPosition;
+        fastaVector.metadata.data[i].sequenceEndPosition - 1;
     size_t sequenceLength = sequenceEndPosition - sequenceStartPosition;
 
     size_t headerStartPosition =
@@ -160,7 +160,7 @@ void testInsertSequences() {
   fastaVectorDealloc(&fastaVector);
 }
 
-int main(int argc, char **argv) {
+int main() {
   printf("beginning tests\n");
   testInitSequenceList();
   testInsertSequences();

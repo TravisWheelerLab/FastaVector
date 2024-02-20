@@ -167,8 +167,6 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
  * @param headerLength pointer to store the header length into.
  *
  *
- * TODO: Should we return a statuc code in case the index was out of bounds?
- *
  */
 void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
                                size_t headerIndex, char **headerPtr,
