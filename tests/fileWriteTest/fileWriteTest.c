@@ -11,7 +11,7 @@ void fastaVectorFileWriteTest(size_t numSequences, const char *fileSrc);
 void generateRandomFastaString(char *buffer, size_t length);
 void fastaVectorWriteStaticTest();
 
-int main(int argc, char **argv) {
+int main() {
   char fileSrcBuffer[128];
   buffer = malloc(262144 * sizeof(char));
   fastaVectorWriteStaticTest();

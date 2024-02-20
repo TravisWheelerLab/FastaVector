@@ -160,7 +160,7 @@ void testInsertSequences() {
   fastaVectorDealloc(&fastaVector);
 }
 
-int main(int argc, char **argv) {
+int main() {
   printf("beginning tests\n");
   testInitSequenceList();
   testInsertSequences();
