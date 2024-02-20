@@ -157,4 +157,34 @@ if (BUILD_TESTING)
                 PROPERTIES
                 WORKING_DIRECTORY tests/insertTest
         )
+
+        # multiSequenceTest
+
+        add_executable(
+                multiSequenceTest
+
+                tests/multiSequenceTest/multiSequenceTest.c
+                ${C_FILES}
+        )
+        target_compile_options(
+                multiSequenceTest
+
+                PRIVATE
+                -mtune=native
+                -Wall
+                -Wextra
+                -g
+        )
+        target_link_options(
+                multiSequenceTest
+
+                PRIVATE
+        )
+        add_test(NAME multiSequenceTest COMMAND multiSequenceTest)
+        set_tests_properties(
+                multiSequenceTest
+
+                PROPERTIES
+                WORKING_DIRECTORY tests/multiSequenceTest
+        )
 endif ()
