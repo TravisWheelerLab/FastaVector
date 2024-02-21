@@ -36,5 +36,117 @@ int main() {
                      "headers did not match exactly.");
   }
 
+  // test getting the local positions
+  struct FastaVectorLocalPosition lp;
+  bool locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 0, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 0,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 3, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 3,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 0,
+      "locate result sequence Index did not recieve expected value");
+
+  // skipping the null seperator
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 5, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 1,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 8, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 3,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 1,
+      "locate result sequence Index did not recieve expected value");
+
+  // skipping the null seperator
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 10, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 2,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 12, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 2,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 2,
+      "locate result sequence Index did not recieve expected value");
+
+  // skipping the null seperator
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 14, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 3,
+      "locate result sequence Index did not recieve expected value");
+
+  // skipping the null seperator
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 16, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 4,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 19, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 3,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 4,
+      "locate result sequence Index did not recieve expected value");
+
+  // skipping the null seperator
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 21, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 0,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 5,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 23, &lp);
+  testAssertString(locateResult, "locate result returned false");
+  testAssertString(lp.positionInSequence == 2,
+                   "locate result position did not recieve expected value");
+  testAssertString(
+      lp.sequenceIndex == 5,
+      "locate result sequence Index did not recieve expected value");
+
+  locateResult =
+      fastaVectorGetLocalSequencePositionFromGlobal(&fastaVector, 26, &lp);
+  testAssertString(
+      !locateResult,
+      "locate result after sequence end did not return false, but should have");
+
   printf("test finished\n");
 }

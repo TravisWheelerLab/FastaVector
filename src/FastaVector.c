@@ -350,28 +350,43 @@ bool fastaVectorGetLocalSequencePositionFromGlobal(
     const struct FastaVector *const fastaVector,
     const size_t globalSequencePosition,
     struct FastaVectorLocalPosition *localPosition) {
-  if (localPosition == NULL) {
+  if (__builtin_expect(localPosition == NULL, 0)) {
     return false;
   }
-  for (size_t sequenceIndex = 0; sequenceIndex < fastaVector->metadata.count;
-       sequenceIndex++) {
-    const size_t sequenceStartPosition =
-        sequenceIndex == 0
-            ? 0
-            : fastaVector->metadata.data[sequenceIndex - 1].sequenceEndPosition;
-    const size_t sequenceEndPosition =
-        fastaVector->metadata.data[sequenceIndex].sequenceEndPosition;
+  // check to see if this is outside the bounds
+  if (__builtin_expect(
+          globalSequencePosition >
+              fastaVector->metadata.data[fastaVector->metadata.count - 1]
+                  .sequenceEndPosition,
+          0)) {
+    return false;
+  }
 
-    if (globalSequencePosition <= sequenceEndPosition) {
-      const size_t positionInSequence =
-          globalSequencePosition - sequenceStartPosition;
-      localPosition->sequenceIndex = sequenceIndex;
-      localPosition->positionInSequence = positionInSequence;
-      return true;
+  // perform binary search
+  const int64_t numSequences = fastaVector->metadata.count;
+  int64_t lowerBound = 0;
+  int64_t upperBound = numSequences - 1;
+  while (lowerBound <= upperBound) {
+    const int64_t midpoint = (upperBound + lowerBound) / 2;
+    const size_t midpointEndPosition =
+        fastaVector->metadata.data[midpoint].sequenceEndPosition;
+
+    if (globalSequencePosition < midpointEndPosition) {
+      upperBound = midpoint - 1;
+    } else {
+      lowerBound = midpoint + 1;
     }
   }
 
+  localPosition->sequenceIndex = upperBound + 1;
+  localPosition->positionInSequence =
+      localPosition->sequenceIndex == 0
+          ? globalSequencePosition
+          : globalSequencePosition -
+                fastaVector->metadata.data[localPosition->sequenceIndex - 1]
+                    .sequenceEndPosition;
+
   // if no sequence is found that contains the given position, return false to
   // show failure
-  return false;
+  return true;
 }
