@@ -59,6 +59,22 @@ install(FILES src/FastaVectorString.h
     DESTINATION include
 )
 
+# Add -O3 and -fPIC flags for the shared library
+target_compile_options(
+        fastavector
+        PRIVATE
+        -O3
+        -fPIC
+)
+# Add -O3 and -fPIC flags for static library
+target_compile_options(
+        fastavector_static 
+        PRIVATE
+        -O3
+        -fPIC
+)
+
+
 
 # ----------
 # Unit Tests
