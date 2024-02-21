@@ -350,7 +350,7 @@ bool fastaVectorGetLocalSequencePositionFromGlobal(
     const struct FastaVector *const fastaVector,
     const size_t globalSequencePosition,
     struct FastaVectorLocalPosition *localPosition) {
-  if (localPosition == NULL) {
+  if (__builtin_expect(localPosition == NULL, 0)) {
     return false;
   }
   // check to see if this is outside the bounds
