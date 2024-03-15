@@ -55,7 +55,6 @@ enum FastaVectorReturnCode
 fastaVectorReadFasta(const char *_RESTRICT_ const fileSrc,
                      struct FastaVector *fastaVector) {
 
-
   FILE *fastaFile = fopen(fileSrc, "r");
   if (__builtin_expect(!fastaFile, false)) {
     return FASTA_VECTOR_FILE_OPEN_FAIL;
@@ -267,9 +266,8 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
 
 // return NULL for headerPtr and 0 for header length if the fastaVector does not
 // have a header for the given headerIndex
-void fastaVectorGetHeader(struct FastaVector *fastaVector,
-                               size_t headerIndex, char **headerPtr,
-                               size_t *headerLength) {
+void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
+                          char **headerPtr, size_t *headerLength) {
   if (__builtin_expect(headerIndex >= fastaVector->metadata.count, false)) {
     *headerLength = 0;
     *headerPtr = NULL;
@@ -289,8 +287,8 @@ void fastaVectorGetHeader(struct FastaVector *fastaVector,
 // return NULL for headerPtr and 0 for header length if the fastaVector does not
 // have a header for the given headerIndex
 void fastaVectorGetSequence(struct FastaVector *fastaVector,
-                                 size_t sequenceIndex, char **sequencePtr,
-                                 size_t *sequenceLength) {
+                            size_t sequenceIndex, char **sequencePtr,
+                            size_t *sequenceLength) {
   if (__builtin_expect(sequenceIndex >= fastaVector->metadata.count, false)) {
     *sequenceLength = 0;
     *sequencePtr = NULL;
