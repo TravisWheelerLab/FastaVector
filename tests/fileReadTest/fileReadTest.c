@@ -23,7 +23,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
     const size_t expectedSequenceLength = strlen(testSequenceStrings[i]);
     size_t headerLength;
     char *headerPtr;
-    fastaVectorFastaGetHeader(&fastaVector, i, &headerPtr, &headerLength);
+    fastaVectorGetHeader(&fastaVector, i, &headerPtr, &headerLength);
     sprintf(buffer, "header length of %zu did not match expected length %zu.",
             headerLength, expectedHeaderLength);
 
@@ -38,7 +38,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
 
     char *sequencePtr;
     size_t sequenceLength;
-    fastaVectorFastaGetSequence(&fastaVector, i, &sequencePtr, &sequenceLength);
+    fastaVectorGetSequence(&fastaVector, i, &sequencePtr, &sequenceLength);
     sprintf(buffer, "sequence length of %zu did not match expected length %zu.",
             sequenceLength, expectedSequenceLength);
     testAssertString(sequenceLength == expectedSequenceLength, buffer);
@@ -53,7 +53,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
 
     char terminator = headerPtr[headerLength - 1];
     sprintf(buffer,
-            "header index %zu was not null terminated! (found char %c after "
+            "header index %zu was not null terminated! (found char %u after "
             "the end of the header)",
             i, terminator);
     testAssertString(terminator == '\0', buffer);
