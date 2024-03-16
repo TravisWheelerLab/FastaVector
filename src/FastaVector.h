@@ -162,8 +162,9 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
  *
  *
  */
-void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
-                          char **headerPtr, size_t *headerLength);
+void fastaVectorGetHeader(const struct FastaVector *const fastaVector,
+                          size_t headerIndex, char **headerPtr,
+                          size_t *headerLength);
 
 /**
  * @relates FastaVector
@@ -180,7 +181,7 @@ void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
  * TODO: Should we return a static code in case the index was out of bounds?
  *
  */
-void fastaVectorGetSequence(struct FastaVector *fastaVector,
+void fastaVectorGetSequence(const struct FastaVector *const fastaVector,
                             size_t sequenceIndex, char **sequencePtr,
                             size_t *sequenceLength);
 

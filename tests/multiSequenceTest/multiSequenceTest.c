@@ -24,12 +24,12 @@ int main() {
   for (uint8_t i = 0; i < 6; i++) {
     size_t length;
     char *charPtr;
-    fastaVectorFastaGetHeader(&fastaVector, i, &charPtr, &length);
+    fastaVectorGetHeader(&fastaVector, i, &charPtr, &length);
     testAssertString(length == strlen(headers[i]),
                      "header lengths did not match");
     testAssertString(strcmp(headers[i], charPtr) == 0,
                      "headers did not match exactly.");
-    fastaVectorFastaGetSequence(&fastaVector, i, &charPtr, &length);
+    fastaVectorGetSequence(&fastaVector, i, &charPtr, &length);
     testAssertString(length == strlen(seqs[i]),
                      "sequence lengths did not match");
     testAssertString(strcmp(seqs[i], charPtr) == 0,

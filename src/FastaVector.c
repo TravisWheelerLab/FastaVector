@@ -293,8 +293,9 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
 
 // return NULL for headerPtr and 0 for header length if the fastaVector does not
 // have a header for the given headerIndex
-void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
-                          char **headerPtr, size_t *headerLength) {
+void fastaVectorGetHeader(const struct FastaVector *const fastaVector,
+                          size_t headerIndex, char **headerPtr,
+                          size_t *headerLength) {
   if (__builtin_expect(headerIndex >= fastaVector->metadata.count, false)) {
     *headerLength = 0;
     *headerPtr = NULL;
@@ -314,7 +315,7 @@ void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
 
 // return NULL for headerPtr and 0 for header length if the fastaVector does not
 // have a header for the given headerIndex
-void fastaVectorGetSequence(struct FastaVector *fastaVector,
+void fastaVectorGetSequence(const struct FastaVector *const fastaVector,
                             size_t sequenceIndex, char **sequencePtr,
                             size_t *sequenceLength) {
   if (__builtin_expect(sequenceIndex >= fastaVector->metadata.count, false)) {
