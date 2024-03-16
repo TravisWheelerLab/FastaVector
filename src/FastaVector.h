@@ -13,6 +13,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#ifdef __cplusplus
+#define _RESTRICT_ __restrict__
+#else
+#define _RESTRICT_ restrict
+#endif
+
 /// @brief Primary struct that stores data for a given FASTA file.
 struct FastaVector {
   /// @brief Storage for the fasta sequence data.
@@ -98,15 +104,9 @@ void fastaVectorDealloc(struct FastaVector *fastaVector);
  * takes any properly formed fasta file, and loads all headers and sequences.
  *
  */
-#ifdef __cplusplus
 enum FastaVectorReturnCode
-fastaVectorReadFasta(const char *__restrict__ const fileSrc,
+fastaVectorReadFasta(const char *_RESTRICT_ const fileSrc,
                      struct FastaVector *fastaVector);
-#else
-enum FastaVectorReturnCode
-fastaVectorReadFasta(const char *restrict const fileSrc,
-                     struct FastaVector *fastaVector);
-#endif
 
 /**
  * @relates FastaVector
@@ -124,15 +124,9 @@ fastaVectorReadFasta(const char *restrict const fileSrc,
  * This function will overwrite the file at the given path.
  *
  */
-#ifdef __cplusplus
 enum FastaVectorReturnCode
-fastaVectorWriteFasta(const char *__restrict__ const filePath,
+fastaVectorWriteFasta(const char *_RESTRICT_ const filePath,
                       struct FastaVector *fastaVector, uint32_t fileLineLength);
-#else
-enum FastaVectorReturnCode
-fastaVectorWriteFasta(const char *restrict const filePath,
-                      struct FastaVector *fastaVector, uint32_t fileLineLength);
-#endif
 
 /**
  * @relates FastaVector
@@ -168,9 +162,8 @@ fastaVectorAddSequenceToList(struct FastaVector *fastaVector, char *header,
  *
  *
  */
-void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
-                               size_t headerIndex, char **headerPtr,
-                               size_t *headerLength);
+void fastaVectorGetHeader(struct FastaVector *fastaVector, size_t headerIndex,
+                          char **headerPtr, size_t *headerLength);
 
 /**
  * @relates FastaVector
@@ -187,9 +180,9 @@ void fastaVectorFastaGetHeader(struct FastaVector *fastaVector,
  * TODO: Should we return a static code in case the index was out of bounds?
  *
  */
-void fastaVectorFastaGetSequence(struct FastaVector *fastaVector,
-                                 size_t sequenceIndex, char **sequencePtr,
-                                 size_t *sequenceLength);
+void fastaVectorGetSequence(struct FastaVector *fastaVector,
+                            size_t sequenceIndex, char **sequencePtr,
+                            size_t *sequenceLength);
 
 /**
  * @relates FastaVector
