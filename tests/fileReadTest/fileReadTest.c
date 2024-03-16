@@ -18,8 +18,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
                    "fail on reading test1.fasta for test 1");
 
   for (size_t i = 0; i < numHeaders; i++) {
-    // add 1 to the strings for the  null terminators
-    const size_t expectedHeaderLength = strlen(testHeaderStrings[i]) + 1;
+    const size_t expectedHeaderLength = strlen(testHeaderStrings[i]);
     const size_t expectedSequenceLength = strlen(testSequenceStrings[i]);
     size_t headerLength;
     char *headerPtr;
@@ -51,7 +50,7 @@ void readTest(char **const testHeaderStrings, char **const testSequenceStrings,
             testSequenceStrings[i], (int)sequenceLength, sequencePtr);
     testAssertString(stringsMatch, buffer);
 
-    char terminator = headerPtr[headerLength - 1];
+    char terminator = headerPtr[headerLength];
     sprintf(buffer,
             "header index %zu was not null terminated! (found char %u after "
             "the end of the header)",
