@@ -111,9 +111,9 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
     size_t headerLengthFromVector;
     size_t sequenceLengthFromVector;
     fastaVectorGetHeader(&fastaVector, sequenceNum, &headerFromVector,
-                              &headerLengthFromVector);
+                         &headerLengthFromVector);
     fastaVectorGetSequence(&fastaVector, sequenceNum, &sequenceFromVector,
-                                &sequenceLengthFromVector);
+                           &sequenceLengthFromVector);
     sprintf(buffer, "header was supposed to be length %zu, but got %zu.",
             headerLength, headerLengthFromVector);
     testAssertString((headerLength + 1) == headerLengthFromVector, buffer);
@@ -156,7 +156,7 @@ void fastaVectorFileWriteTest(const size_t numSequences, const char *fileSrc) {
     size_t lastHeaderLen;
     char *lastHeaderPtr;
     fastaVectorGetHeader(&fastaVector, fastaVector.metadata.count - 1,
-                              &lastHeaderPtr, &lastHeaderLen);
+                         &lastHeaderPtr, &lastHeaderLen);
     printf("headers did not match, \n h1: %.*s\n h2: %.*s\n hr: %.*s\n",
            (int)fastaVector.header.count, fastaVector.header.charData,
            (int)fastaReadVector.header.count, fastaReadVector.header.charData,
