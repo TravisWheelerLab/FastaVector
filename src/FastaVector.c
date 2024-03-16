@@ -307,8 +307,7 @@ void fastaVectorGetHeader(const struct FastaVector *const fastaVector,
     const size_t headerEndPosition =
         fastaVector->metadata.data[headerIndex].headerEndPosition;
 
-    // the -1 removes the terminator
-    *headerLength = headerEndPosition - headerStartPosition - 1;
+    *headerLength = headerEndPosition - headerStartPosition;
     *headerPtr = &fastaVector->header.charData[headerStartPosition];
   }
 }
